@@ -4,13 +4,14 @@ import static com.triviapp.aux.FileController.createDirectory;
 import static com.triviapp.aux.FileController.saveFile;
 import static com.triviapp.aux.FileController.verifyFile;
 import com.triviapp.modelo.Usuario;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
 
 /**
  *
@@ -43,7 +44,7 @@ public class IndexServlet extends HttpServlet {
 
     private void crearUsuarioInicio() throws IOException {
         String NAME_USER_LINUX = System.getProperty("user.name");
-        String ruta = "/home/" + NAME_USER_LINUX + "/WebFormBuilder/data/users/";
+        String ruta = "/home/" + NAME_USER_LINUX + "/NetBeansProjects/TriviApp/users/";
         String archivoDestino = ruta + "admin.db";
         String texto = """
                        db.user(

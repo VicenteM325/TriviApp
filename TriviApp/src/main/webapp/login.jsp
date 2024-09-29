@@ -1,4 +1,3 @@
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -7,8 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Iniciar sesion</title>
 
-        <!--CSS-->
-        <jsp:include page="/WEB-INF/extras/extrasCSS.jsp"/>
+        <!-- CSS directo -->
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css">
     </head>
     <body>
 
@@ -31,19 +30,22 @@
                             <button type="reset" class="btn btn-info mr-2">Limpiar</button>
                             <button type="submit" class="btn btn-success">Iniciar sesion</button>
                         </div>
-                        <c:if test="${!empty(errorLogin)}" >
+
+                        <!-- Reemplazo de JSTL <c:if> con scriptlet JSP -->
+                        <% if (request.getAttribute("errorLogin") != null) { %>
                             <div class="alert alert-danger alert-dismissible mt-2">
                                 <button type="button" class="close" data-dismiss="alert">×</button>
-                                ${errorLogin}
+                                <%= request.getAttribute("errorLogin") %>
                             </div>
-                        </c:if>
+                        <% } %>
                     </form>
                 </div>
             </div>
         </div>
 
-        <!--JS--> 
-        <jsp:include page="/WEB-INF/extras/extrasJS.jsp"/>
+        <!-- JS directo -->
+        <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/bootstrap.bundle.min.js"></script>
 
         <!-- JQuery Validate -->
         <script src="${pageContext.request.contextPath}/js/jquery.validate.js"></script>

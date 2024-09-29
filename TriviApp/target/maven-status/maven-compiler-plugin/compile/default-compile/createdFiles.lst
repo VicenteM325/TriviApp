@@ -4,7 +4,6 @@ com/triviapp/analizadores/sintactico/RequestsSym.class
 com/triviapp/validator/form/CreateFormRequestValidator.class
 com/triviapp/generator/response/ResponseStructureGenerator.class
 com/triviapp/modelo/errores/TipoError.class
-com/triviapp/Servlets/LoginServlet.class
 com/triviapp/executor/user/CreateUserRequestExecutor.class
 com/triviapp/datos/usuario/UsuarioDAO.class
 com/triviapp/analizadores/sintactico/parser.class

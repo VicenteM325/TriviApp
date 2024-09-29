@@ -23,7 +23,7 @@ import java.util.List;
 public class FormularioDAO implements CRUD <Formulario> {
     
     private final String NAME_USER_LINUX = System.getProperty("user.name");
-    private final String PATH_FORMS = "/home/" + NAME_USER_LINUX + "/WebFormBuilder/data/forms/";
+    private final String PATH_FORMS = "/home/" + NAME_USER_LINUX + "/NetBeansProjects/TriviApp/forms/";
     private final StorageFileAnalyzer analyzer = new StorageFileAnalyzer();
     private Generator formSSG;
 
