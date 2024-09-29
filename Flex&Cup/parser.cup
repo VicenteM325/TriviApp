@@ -1,0 +1,568 @@
+package com.triviapp.analizadores.sintactico;
+
+import com.triviapp.modelo.Token;
+import com.triviapp.modelo.errores.Error;
+import com.triviapp.modelo.errores.ErrorAnalisis;
+import com.triviapp.modelo.errores.TipoError;
+import com.triviapp.modelo.solicitudes.Solicitud;
+import com.triviapp.modelo.solicitudes.TipoSolicitud;
+import com.triviapp.modelo.solicitudes.Parametro;
+import com.triviapp.validator.Validator;
+import com.triviapp.validator.user.CreateUserRequestValidator;
+import com.triviapp.validator.user.ModifyUserRequestValidator;
+import com.triviapp.validator.form.CreateFormRequestValidator;
+import com.triviapp.validator.form.ModifyFormRequestValidator;
+import com.triviapp.validator.component.CreateComponentRequestValidator;
+import com.triviapp.validator.component.ModifyComponentRequestValidator;
+import com.triviapp.validator.component.DeleteComponentRequestValidator;
+import com.triviapp.validator.component.ClassParameterValidator;
+import com.triviapp.validator.component.ClassRequiredParametersValidator;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import java_cup.runtime.Symbol;
+
+parser code{:
+
+    private final List<Error> errores = new ArrayList();
+    private final List<Solicitud> solicitudes = new ArrayList();
+    private List<Parametro> parametros = new ArrayList();
+
+    private final Validator createUserRV = new CreateUserRequestValidator();
+    private final Validator modifyUserRV = new ModifyUserRequestValidator();
+    private final Validator createFormRV = new CreateFormRequestValidator();
+    private final Validator modifyFormRV = new ModifyFormRequestValidator();
+    private final Validator createComponentRV = new CreateComponentRequestValidator();
+    private final Validator modifyComponentRV = new ModifyComponentRequestValidator();
+    private final Validator deleteComponentRV = new DeleteComponentRequestValidator();
+    private final Validator classParameterV = new ClassParameterValidator();
+    private final Validator classRequiredParametersV = new ClassRequiredParametersValidator();
+    String error;
+
+    public List<Error> getErrores() {
+        return this.errores;
+    }
+
+    public List<Solicitud> getSolicitudes() {
+        return this.solicitudes;
+    }
+
+    private void addParameter(Parametro param) {
+        boolean add = true;
+        
+        for (Parametro p : parametros) {
+            if (p.getName().equalsIgnoreCase(param.getName())) {
+                add = false;
+            }
+        }
+        
+        if (add) {
+            parametros.add(param);
+        } else {
+            System.out.println("El parametro ya esta agregado");
+        }
+    }
+
+    public void syntax_error(Symbol s) {
+        Token t = (Token) s.value;
+        StringBuilder descripcion = new StringBuilder("Se esperaba: ");
+        expected_token_ids().forEach(x -> descripcion.append(symbl_name_from_id(x)).append(", "));
+        errores.add(new ErrorAnalisis(t.getLexema(), t.getLinea(), t.getColumna(), TipoError.SINTACTICO, descripcion.toString()));
+    }
+
+    public void unrecovered_syntax_error(Symbol cur_token){
+        Token t = (Token) cur_token.value;
+        System.out.println("Error irrecuperable " + t.getLexema());
+    }
+
+    protected int error_sync_size() {
+        return 1;
+    }
+:}
+
+//Terminales
+terminal Token      START_REQUEST, START_REQUESTS, END_REQUEST, END_REQUESTS;
+terminal Token      USER_CREDENTIALS, FORM_PARAMS, COMPONENT_PARAMS;
+
+terminal Token      LOGIN, CREATE_USER, DELETE_USER, MODIFY_USER;
+terminal Token      PARAM_USUARIO, PARAM_NOMBRE, PARAM_PASSWORD, PARAM_FECHA_CREACION, PARAM_FECHA_MODIFICACION, PARAM_OLD_USER, PARAM_NEW_USER, PARAM_NEW_PASSWORD;
+
+terminal Token      NEW_FORM, DELETE_FORM, MODIFY_FORM;
+terminal Token      PARAM_ID, PARAM_TIEMPO_TRIV, PARAM_NOMBRE_FORM, PARAM_TEMA, PARAM_INSTITUCION, PARAM_USUARIO_CREACION;
+
+terminal Token      NEW_COMPONENT, DELETE_COMPONENT, EDIT_COMPONENT;
+terminal Token      PARAM_NOMBRE_CAMPO, PARAM_FORMULARIO, PARAM_CLASE, PARAM_INDICE, PARAM_TEXTO_VISIBLE;
+terminal Token      PARAM_OPCIONES, PARAM_FILAS, PARAM_COLUMNAS, PARAM_RESPUESTAS;
+terminal Token      CLASS_CAMPO_TEXTO, CLASS_AREA_TEXTO, CLASS_CHECKBOX, CLASS_RADIO, CLASS_FICHERO, CLASS_COMBO;
+terminal Token      OPCIONES;
+
+terminal Token      LESS_THAN, GREATER_THAN, EXCLAMATION_MARK, COLON, COMMA, OPEN_BRACE, CLOSE_BRACE, OPEN_BRACKET, CLOSE_BRACKET;
+terminal Token      VALUE, ID, FECHA, LITERAL, ENTERO;
+
+//no terminales
+non terminal        inicio, startRequests, requests, endRequests, startRequest, endRequest;
+non terminal        requestType, startContentUser, startContentForm, startContentComponent, endContent;
+
+non terminal        bloquesLogin, bloquesCreateUser, bloquesModifyUser, bloquesDeleteUser;
+non terminal        bloqueLogin, bloqueCreateUser, bloqueModifyUser, bloqueDeleteUser;
+
+non terminal        bloquesNewForm, bloquesEditForm, bloquesDeleteForm;
+non terminal        bloqueNewForm, bloqueEditForm, bloqueDeleteForm;
+
+non terminal        bloquesNewComponent, bloquesEditComponent, bloquesDeleteComponent;
+non terminal        bloqueNewComponent, bloqueEditComponent, bloqueDeleteComponent;
+
+non terminal                    paramsLogin, paramsCreateUser, paramsModifyUser;
+non terminal Parametro          paramLogin, paramCreateUser, paramModifyUser, paramDeleteUser;
+non terminal String             nameParamLogin, nameParamCreateUser, nameParamModifyUser;
+
+non terminal                    paramsNewForm, paramsEditForm;
+non terminal Parametro          paramNewForm, paramEditForm, paramDeleteForm;
+non terminal String             nameParamNewForm;
+
+
+non terminal                    paramsNewComponent, paramsEditComponent, paramsDeleteComponent;
+non terminal Parametro          paramNewComponent, paramEditComponent, paramDeleteComponent;
+non terminal String             nameParamNewComponent, nameParamEditComponent;
+non terminal String             clase,opciones;
+
+non terminal String             value, id, fecha, literal, entero, keyword;
+
+inicio ::= startRequest
+         | startRequests
+         ;
+
+startRequests ::= LESS_THAN EXCLAMATION_MARK START_REQUESTS GREATER_THAN requests;
+
+requests ::= startRequest endRequests
+           | startRequest requests
+           | error GREATER_THAN
+           ;
+
+/******************************Produccion para el inicio de una solicitud en general******************************/
+startRequest ::= LESS_THAN EXCLAMATION_MARK START_REQUEST COLON requestType endContent endRequest
+               | error GREATER_THAN
+               ;
+
+/******************************Producciones para los diferentes tipos de solicitud******************************/
+requestType ::= LOGIN startContentUser bloquesLogin
+              | CREATE_USER startContentUser bloquesCreateUser
+              | MODIFY_USER startContentUser bloquesModifyUser
+              | DELETE_USER startContentUser bloquesDeleteUser
+              | NEW_FORM startContentForm bloquesNewForm
+              | MODIFY_FORM startContentForm bloquesEditForm
+              | DELETE_FORM startContentForm bloquesDeleteForm
+              | NEW_COMPONENT startContentComponent bloquesNewComponent
+              | EDIT_COMPONENT startContentComponent bloquesEditComponent
+              | DELETE_COMPONENT startContentComponent bloquesDeleteComponent
+              ;
+
+startContentUser ::= GREATER_THAN OPEN_BRACE USER_CREDENTIALS COLON OPEN_BRACKET;
+startContentForm ::= GREATER_THAN OPEN_BRACE FORM_PARAMS COLON OPEN_BRACKET;
+startContentComponent ::= GREATER_THAN OPEN_BRACE COMPONENT_PARAMS COLON OPEN_BRACKET;
+
+
+
+/******************************Producciones para parametros de solicitud Login******************************/
+bloquesLogin ::= bloqueLogin COMMA bloquesLogin
+               | bloqueLogin
+               ;
+
+bloqueLogin ::= OPEN_BRACE:o paramsLogin CLOSE_BRACE
+                     {:
+                        error = createUserRV.validate(o, parametros);
+                        if (error.isEmpty()) {
+                            solicitudes.add(new Solicitud(TipoSolicitud.LOGIN, parametros));
+                        } else {
+                            errores.add(new Error(error));
+                        }
+                        parametros = new ArrayList();
+                     :}
+                     ;
+
+paramsLogin ::= paramLogin:p COMMA paramsLogin        {:addParameter(p);:}
+              | paramLogin:p                          {:addParameter(p);:}
+              ;
+
+paramLogin ::= nameParamLogin:n COLON value:v           {:RESULT = new Parametro(n, v);:}
+             ;
+
+nameParamLogin ::= PARAM_USUARIO:p          {:RESULT = p.getLexema();:}
+                 | PARAM_PASSWORD:p         {:RESULT = p.getLexema();:}
+                 ;
+/**************************Fin de producciones para parametros de solicitud Login**************************/    
+
+
+
+/******************************Producciones para parametros de solicitud CrearUsuario******************************/
+bloquesCreateUser ::= bloqueCreateUser COMMA bloquesCreateUser
+                    | bloqueCreateUser
+                    ;
+
+bloqueCreateUser ::= OPEN_BRACE:o paramsCreateUser CLOSE_BRACE
+                   {:
+                        error = createUserRV.validate(o, parametros);
+                        if (error.isEmpty()) {
+                            solicitudes.add(new Solicitud(TipoSolicitud.CREATE_USER, parametros));
+                        } else {
+                            errores.add(new Error(error));
+                        }
+                        parametros = new ArrayList();
+                   :}
+                   ;
+
+paramsCreateUser ::= paramCreateUser:p COMMA paramsCreateUser   {:addParameter(p);:}
+                   | paramCreateUser:p                          {:addParameter(p);:}
+                   ;
+     
+paramCreateUser ::= nameParamCreateUser:n COLON value:v         {:RESULT = new Parametro(n, v);:}
+                  | PARAM_FECHA_CREACION:p COLON fecha:f        {:RESULT = new Parametro(p.getLexema(), f);:}
+                  ;
+
+nameParamCreateUser ::= PARAM_USUARIO:p               {:RESULT = p.getLexema();:}
+                      | PARAM_PASSWORD:p              {:RESULT = p.getLexema();:}
+                      | PARAM_NOMBRE:p                {:RESULT = p.getLexema();:}
+                      | PARAM_INSTITUCION:p           {:RESULT = p.getLexema();:}
+                      ;
+/****************************Fin producciones para parametros de solicitud CrearUsuario****************************/      
+
+
+
+/**************************Producciones para parametros de solicitud ModificarUsuario*************************/
+bloquesModifyUser ::= bloqueModifyUser COMMA bloquesModifyUser
+                    | bloqueModifyUser
+                    ;
+
+bloqueModifyUser ::= OPEN_BRACE:o paramsModifyUser CLOSE_BRACE
+                        {:
+                            error = modifyUserRV.validate(o, parametros);
+                            if (error.isEmpty()) {
+                                solicitudes.add(new Solicitud(TipoSolicitud.MODIFY_USER, parametros));
+                            } else {
+                                errores.add(new Error(error));
+                            }
+                            parametros = new ArrayList();
+                        :}
+                        ;
+
+paramsModifyUser ::= paramModifyUser:p COMMA paramsModifyUser     {:addParameter(p);:}
+                   | paramModifyUser:p                            {:addParameter(p);:}
+                   ;
+
+paramModifyUser ::= nameParamModifyUser:n COLON value:v             {:RESULT = new Parametro(n, v);:}
+                  | PARAM_FECHA_MODIFICACION:p COLON fecha:f        {:RESULT = new Parametro(p.getLexema(), f);:}
+                    ;
+
+nameParamModifyUser ::= PARAM_OLD_USER:p                  {:RESULT = p.getLexema();:}
+                      | PARAM_NEW_USER:p                  {:RESULT = p.getLexema();:}
+                      | PARAM_NEW_PASSWORD:p              {:RESULT = p.getLexema();:}
+                      ;
+/************************Fin producciones para parametros de solicitud ModificarUsuario************************/       
+
+
+
+/**************************Producciones para parametros de solicitud EliminarUsuario*************************/
+bloquesDeleteUser ::= bloqueDeleteUser COMMA bloquesDeleteUser
+                    | bloqueDeleteUser
+                    ;
+
+bloqueDeleteUser ::= OPEN_BRACE paramDeleteUser:p CLOSE_BRACE
+                        {:
+                            parametros.add(p);
+                            solicitudes.add(new Solicitud(TipoSolicitud.DELETE_USER, parametros));
+                            parametros = new ArrayList();
+                        :}
+                        ;
+
+paramDeleteUser ::= PARAM_USUARIO:p COLON value:v
+                    {:
+                        RESULT = new Parametro(p.getLexema(), v);
+                    :}
+                    ;
+/************************Fin producciones para parametros de solicitud EliminarUsuario***********************/
+
+
+
+/******************************Producciones para parametros de solicitud NuevaTrivia******************************/
+bloquesNewForm ::= bloqueNewForm COMMA bloquesNewForm
+               | bloqueNewForm
+               ;
+
+bloqueNewForm ::= OPEN_BRACE:o paramsNewForm CLOSE_BRACE
+                     {:
+                        error = createFormRV.validate(o, parametros);
+                        if (error.isEmpty()) {
+                            solicitudes.add(new Solicitud(TipoSolicitud.NEW_FORM, parametros));
+                        } else {
+                            errores.add(new Error(error));
+                        }
+                        parametros = new ArrayList();
+                     :}
+                     ;
+
+paramsNewForm ::= paramNewForm:p COMMA paramsNewForm        {:addParameter(p);:}
+              | paramNewForm:p                              {:addParameter(p);:}
+              ;
+
+paramNewForm ::= nameParamNewForm:n COLON value:v           {:RESULT = new Parametro(n, v);:}
+               | PARAM_ID:p COLON id:i                      {:RESULT = new Parametro(p.getLexema(), i);:}
+               | PARAM_FECHA_CREACION:p COLON fecha:f       {:RESULT = new Parametro(p.getLexema(), f);:}
+               | PARAM_TIEMPO_TRIV:p COLON entero:e        {:RESULT = new Parametro(p.getLexema(), e);:}
+               | PARAM_TEMA:p COLON literal:l                  {:RESULT = new Parametro(p.getLexema(), l);:}
+               ;
+
+nameParamNewForm ::= PARAM_NOMBRE_FORM:p            {:RESULT = p.getLexema();:}
+                   | PARAM_USUARIO_CREACION:p       {:RESULT = p.getLexema();:}
+                   ;
+/**************************Fin de producciones para parametros de solicitud NuevaTrivia**************************/
+
+
+
+/******************************Producciones para parametros de solicitud DeleteTrivia******************************/
+bloquesDeleteForm ::= bloqueDeleteForm COMMA bloquesDeleteForm
+                    | bloqueDeleteForm
+                    ;
+
+bloqueDeleteForm ::= OPEN_BRACE paramDeleteForm:p CLOSE_BRACE
+                        {:
+                            parametros.add(p);
+                            solicitudes.add(new Solicitud(TipoSolicitud.DELETE_FORM, parametros));
+                            parametros = new ArrayList();
+                        :}
+                        ;
+
+paramDeleteForm ::= PARAM_ID:p COLON id:i               {:RESULT = new Parametro(p.getLexema(), i);:}
+                    ;
+/**************************Fin de producciones para parametros de solicitud DeleteTrivia**************************/
+
+
+
+/******************************Producciones para parametros de solicitud ModifyTrivia******************************/
+bloquesEditForm ::= bloqueEditForm COMMA bloquesEditForm
+                  | bloqueEditForm
+                  ;
+
+bloqueEditForm ::= OPEN_BRACE:o paramsEditForm CLOSE_BRACE
+                 {:
+                    error = modifyFormRV.validate(o, parametros);
+                    if (error.isEmpty()) {
+                        solicitudes.add(new Solicitud(TipoSolicitud.EDIT_FORM, parametros));
+                    } else {
+                        errores.add(new Error(error));
+                    }
+                    parametros = new ArrayList();
+                 :}
+                 ;
+
+paramsEditForm ::= paramEditForm:p COMMA paramsEditForm         {:addParameter(p);:}
+                 | paramEditForm:p                              {:addParameter(p);:}
+                 ;
+
+paramEditForm ::= PARAM_ID:p COLON id:i                      {:RESULT = new Parametro(p.getLexema(), i);:}
+                | PARAM_TIEMPO_TRIV:p COLON entero:e        {:RESULT = new Parametro(p.getLexema(), e);:}
+                | PARAM_NOMBRE_FORM:p COLON value:v          {:RESULT = new Parametro(p.getLexema(), v);:}
+                | PARAM_TEMA:p COLON literal:l                  {:RESULT = new Parametro(p.getLexema(), l);:}
+                ;
+/**************************Fin de producciones para parametros de solicitud ModifyTrivia**************************/
+
+
+
+/******************************Producciones para parametros de solicitud AddComponent******************************/
+bloquesNewComponent ::= bloqueNewComponent COMMA bloquesNewComponent
+                      | bloqueNewComponent
+                      ;
+
+bloqueNewComponent ::= OPEN_BRACE:o paramsNewComponent CLOSE_BRACE
+                     {:
+
+                        error = createComponentRV.validate(o, parametros);
+                        if (error.isEmpty()) {
+                            error = classRequiredParametersV.validate(o, parametros);
+                            if (error.isEmpty()) {
+                                error = classParameterV.validate(o, parametros);
+                                if (error.isEmpty()) {
+                                    solicitudes.add(new Solicitud(TipoSolicitud.NEW_COMPONENT, parametros));
+                                } else {
+                                    errores.add(new Error(error));
+                                }
+                            } else {
+                                errores.add(new Error(error));
+                            }
+                        } else {
+                            errores.add(new Error(error));
+                        }
+                        parametros = new ArrayList();
+                     :}
+                     ;
+
+paramsNewComponent ::= paramNewComponent:p COMMA paramsNewComponent         {:addParameter(p);:}
+                     | paramNewComponent:p                                  {:addParameter(p);:}
+                     ;
+
+paramNewComponent ::= nameParamNewComponent:n COLON value:v         {:RESULT = new Parametro(n, v);:}
+                    | PARAM_ID:p COLON id:i                         {:RESULT = new Parametro(p.getLexema(), i);:}
+                    | PARAM_FORMULARIO:p COLON id:i                 {:RESULT = new Parametro(p.getLexema(), i);:}
+                    | PARAM_CLASE:p COLON clase:c                   {:RESULT = new Parametro(p.getLexema(), c);:}
+                    | PARAM_TEXTO_VISIBLE:p COLON literal:l         {:RESULT = new Parametro(p.getLexema(), l);:}
+                    | PARAM_OPCIONES:p COLON opciones:o             {:RESULT = new Parametro(p.getLexema(), o);:}
+                    | PARAM_FILAS:p COLON entero:e                  {:RESULT = new Parametro(p.getLexema(), e);:}
+                    | PARAM_COLUMNAS:p COLON entero:e               {:RESULT = new Parametro(p.getLexema(), e);:}
+                    | PARAM_RESPUESTAS:p COLON literal:l         {:RESULT = new Parametro(p.getLexema(), l);:}
+                    ;
+
+nameParamNewComponent ::= PARAM_NOMBRE_CAMPO:p          {:RESULT = p.getLexema();:}
+                        ;
+/**************************Fin de producciones para parametros de solicitud AddComponent**************************/
+
+
+
+/******************************Producciones para parametros de solicitud EditComponent******************************/
+bloquesEditComponent ::= bloqueEditComponent COMMA bloquesEditComponent
+                       | bloqueEditComponent
+                       ;
+
+bloqueEditComponent ::= OPEN_BRACE:o paramsEditComponent CLOSE_BRACE
+                      {:
+                            error = modifyComponentRV.validate(o, parametros);
+                            if (error.isEmpty()) {
+                                error = classRequiredParametersV.validate(o, parametros);
+                                if (error.isEmpty()) {
+                                    error = classParameterV.validate(o, parametros);
+                                    if (error.isEmpty()) {
+                                        solicitudes.add(new Solicitud(TipoSolicitud.EDIT_COMPONENT, parametros));
+                                    } else {
+                                        errores.add(new Error(error));
+                                    }
+                                } else {
+                                    errores.add(new Error(error));
+                                }
+                            } else {
+                                errores.add(new Error(error));
+                            }
+                            parametros = new ArrayList();
+                      :}
+                      ;
+
+paramsEditComponent ::= paramEditComponent:p COMMA paramsEditComponent        {:addParameter(p);:}
+                      | paramEditComponent:p                                  {:addParameter(p);:}
+                      ;
+
+paramEditComponent ::= nameParamEditComponent:n COLON value:v         {:RESULT = new Parametro(n, v);:}
+                     | PARAM_ID:p COLON id:i                         {:RESULT = new Parametro(p.getLexema(), i);:}
+                     | PARAM_FORMULARIO:p COLON id:i                 {:RESULT = new Parametro(p.getLexema(), i);:}
+                     | PARAM_CLASE:p COLON clase:c                   {:RESULT = new Parametro(p.getLexema(), c);:}
+                     | PARAM_TEXTO_VISIBLE:p COLON literal:l         {:RESULT = new Parametro(p.getLexema(), l);:}
+                     | PARAM_OPCIONES:p COLON opciones:o             {:RESULT = new Parametro(p.getLexema(), o);:}
+                     | PARAM_FILAS:p COLON entero:e                  {:RESULT = new Parametro(p.getLexema(), e);:}
+                     | PARAM_COLUMNAS:p COLON entero:e               {:RESULT = new Parametro(p.getLexema(), e);:}
+                     | PARAM_INDICE:p COLON entero:e                 {:RESULT = new Parametro(p.getLexema(), e);:}
+                     | PARAM_RESPUESTAS:p COLON literal:l         {:RESULT = new Parametro(p.getLexema(), l);:}
+                     ;
+
+nameParamEditComponent ::= PARAM_NOMBRE_CAMPO:p          {:RESULT = p.getLexema();:}
+                         ;
+/**************************Fin de producciones para parametros de solicitud EditComponent**************************/
+
+
+
+/******************************Producciones para parametros de solicitud DeleteComponent******************************/
+bloquesDeleteComponent ::= bloqueDeleteComponent COMMA bloquesDeleteComponent
+                         | bloqueDeleteComponent
+                         ;
+
+bloqueDeleteComponent ::= OPEN_BRACE:o paramsDeleteComponent CLOSE_BRACE
+                        {:
+                            error = deleteComponentRV.validate(o, parametros);
+                            if (error.isEmpty()) {
+                                solicitudes.add(new Solicitud(TipoSolicitud.DELETE_COMPONENT, parametros));
+                            } else {
+                                errores.add(new Error(error));
+                            }
+                            parametros = new ArrayList();
+                        :}
+                        ;
+
+paramsDeleteComponent ::= paramDeleteComponent:p COMMA paramsDeleteComponent      {:addParameter(p);:}
+                        | paramDeleteComponent:p                                  {:addParameter(p);:}                        ;
+
+paramDeleteComponent ::= PARAM_ID:p COLON id:i              {:RESULT = new Parametro(p.getLexema(), i);:}
+                       | PARAM_FORMULARIO:p COLON id:i      {:RESULT = new Parametro(p.getLexema(), i);:}
+                       ;
+/**************************Fin de producciones para parametros de solicitud DeleteComponent**************************/
+
+value ::= VALUE:v           {:RESULT = v.getLexema();:}
+        | id:i              {:RESULT = i;:}
+        | entero:e          {:RESULT = e;:}
+        | fecha:f           {:RESULT = f;:}
+        | keyword:k         {:RESULT = k;:}
+        ;
+
+id ::= ID:i                 {:RESULT = i.getLexema();:}
+     ;
+
+fecha ::= FECHA:f           {:RESULT = f.getLexema();:}
+        ;
+
+literal ::= LITERAL:l       {:RESULT = l.getLexema();:}
+          | value:v         {:RESULT = v;:}
+          ;
+
+entero ::= ENTERO:e         {:RESULT = e.getLexema();:}
+         ;
+         
+
+clase ::= CLASS_CAMPO_TEXTO:c     {:RESULT = c.getLexema();:}
+        | CLASS_AREA_TEXTO:c      {:RESULT = c.getLexema();:}
+        | CLASS_CHECKBOX:c        {:RESULT = c.getLexema();:}
+        | CLASS_RADIO:c           {:RESULT = c.getLexema();:}
+        | CLASS_FICHERO:c         {:RESULT = c.getLexema();:}
+        | CLASS_COMBO:c           {:RESULT = c.getLexema();:}
+        ;
+
+
+opciones ::= OPCIONES:o         {:RESULT = o.getLexema();:}
+           | value:v            {:RESULT = v;:}
+           ;
+
+keyword ::= clase:c                     {:RESULT = c;:}
+          | LOGIN:k                     {:RESULT = k.getLexema();:}
+          | CREATE_USER:k               {:RESULT = k.getLexema();:}
+          | DELETE_USER:k               {:RESULT = k.getLexema();:}
+          | MODIFY_USER:k               {:RESULT = k.getLexema();:}
+          | NEW_FORM:k                  {:RESULT = k.getLexema();:}
+          | DELETE_FORM:k               {:RESULT = k.getLexema();:}
+          | MODIFY_FORM:k               {:RESULT = k.getLexema();:}
+          | NEW_COMPONENT:k             {:RESULT = k.getLexema();:}
+          | DELETE_COMPONENT:k          {:RESULT = k.getLexema();:}
+          | EDIT_COMPONENT:k            {:RESULT = k.getLexema();:}
+          | USER_CREDENTIALS:k          {:RESULT = k.getLexema();:}
+          | FORM_PARAMS:k               {:RESULT = k.getLexema();:}
+          | COMPONENT_PARAMS:k          {:RESULT = k.getLexema();:}
+          | PARAM_USUARIO:k             {:RESULT = k.getLexema();:}
+          | PARAM_PASSWORD:k            {:RESULT = k.getLexema();:}
+          | PARAM_FECHA_CREACION:k      {:RESULT = k.getLexema();:}
+          | PARAM_FECHA_MODIFICACION:k  {:RESULT = k.getLexema();:}
+          | PARAM_OLD_USER:k            {:RESULT = k.getLexema();:}
+          | PARAM_NEW_USER:k            {:RESULT = k.getLexema();:}
+          | PARAM_NEW_PASSWORD:k        {:RESULT = k.getLexema();:}
+          | PARAM_ID:k                  {:RESULT = k.getLexema();:}
+          | PARAM_TIEMPO_TRIV:k         {:RESULT = k.getLexema();:}
+          | PARAM_NOMBRE_FORM:k         {:RESULT = k.getLexema();:}
+          | PARAM_TEMA:k                {:RESULT = k.getLexema();:}
+          | PARAM_USUARIO_CREACION:k    {:RESULT = k.getLexema();:}
+          | PARAM_NOMBRE_CAMPO:k        {:RESULT = k.getLexema();:}
+          | PARAM_FORMULARIO:k          {:RESULT = k.getLexema();:}
+          | PARAM_CLASE:k               {:RESULT = k.getLexema();:}
+          | PARAM_INDICE:k              {:RESULT = k.getLexema();:}
+          | PARAM_TEXTO_VISIBLE:k       {:RESULT = k.getLexema();:}
+          | PARAM_OPCIONES:k            {:RESULT = k.getLexema();:}
+          | PARAM_FILAS:k               {:RESULT = k.getLexema();:}
+          | PARAM_COLUMNAS:k            {:RESULT = k.getLexema();:}
+          ;
+
+endContent ::= CLOSE_BRACKET CLOSE_BRACE;
+
+endRequest ::= LESS_THAN END_REQUEST EXCLAMATION_MARK GREATER_THAN;
+
+endRequests ::= LESS_THAN EXCLAMATION_MARK END_REQUESTS GREATER_THAN;

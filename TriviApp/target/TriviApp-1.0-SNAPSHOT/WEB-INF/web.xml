@@ -8,8 +8,5 @@
             30
         </session-timeout>
     </session-config>
-    <!-- Pagina de inicio -->
-    <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>
+
 </web-app>
