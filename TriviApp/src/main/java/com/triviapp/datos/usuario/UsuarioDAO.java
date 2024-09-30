@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class UsuarioDAO implements CRUD<Usuario>{
     private final String NAME_USER_LINUX = System.getProperty("user.name");
-    private final String PATH_USERS = "/home/" + NAME_USER_LINUX + "/NetBeansProjects/TriviApp/";
+    private final String PATH_USERS = "/home/" + NAME_USER_LINUX + "/NetBeansProjects/TriviApp/data/users/";
     private final StorageFileAnalyzer analyzer = new StorageFileAnalyzer();
     private Generator userSSG;
 

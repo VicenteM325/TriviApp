@@ -44,14 +44,16 @@ public class IndexServlet extends HttpServlet {
 
     private void crearUsuarioInicio() throws IOException {
         String NAME_USER_LINUX = System.getProperty("user.name");
-        String ruta = "/home/" + NAME_USER_LINUX + "/NetBeansProjects/TriviApp/users/";
+        String ruta = "/home/" + NAME_USER_LINUX + "/NetBeansProjects/TriviApp/data/users/";
         String archivoDestino = ruta + "admin.db";
         String texto = """
                        db.user(
                            {
                                "USUARIO" : "admin",
                                "PASSWORD" : "admin",
-                               "FECHA_CREACION" : "2024-09-16"
+                               "NOMBRE" : "admin",
+                               "INSTITUCION" : "cunoc",
+                               "FECHA_CREACION" : "2024-09-29"
                            }
                        )""";
 

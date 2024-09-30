@@ -2,6 +2,8 @@ db.user(
     {
         "USUARIO" : "admin",
         "PASSWORD" : "admin",
+        "NOMBRE" : "admin",
+        "INSTITUCION" : "cunoc",
         "FECHA_CREACION" : "2024-09-29"
     }
 )

@@ -1,0 +1,82 @@
+package com.response.analizador.sintactico;
+
+import com.response.model.Respuesta;
+import java.util.ArrayList;
+import java.util.List;
+import java_cup.runtime.Symbol;
+
+parser code {:
+    
+    private List<Respuesta> respuestas = new ArrayList();
+    private Respuesta respuesta = new Respuesta();
+
+    public List<Respuesta> getRespuestas() {
+        return respuestas;
+    }
+
+    private void addRespuesta() {
+        respuestas.add(respuesta);
+        respuesta = new Respuesta();
+    }
+
+    public void syntax_error(Symbol s) {
+        String ss =  (String) s.value;
+        StringBuilder descripcion = new StringBuilder("Se esperaba: ");
+        expected_token_ids().forEach(x -> descripcion.append(symbl_name_from_id(x)).append(", "));
+    }
+
+:}
+
+terminal        START_RESPONSE, END_RESPONSE, START_RESPONSES, END_RESPONSES;
+terminal        RESPONSE_PARAMS, SERVER_RESPONSE;
+
+terminal        PARAM_MESSAGE, PARAM_LOGGED_USER;
+
+terminal String     LESS_THAN, GREATER_THAN, EXCLAMATION_MARK, COLON, COMMA, OPEN_BRACE, CLOSE_BRACE, OPEN_BRACKET, CLOSE_BRACKET;
+terminal String     VALUE, LITERAL;
+
+non terminal        inicio, startResponses, responses, endResponses, startResponse, endResponse, startContent, endContent;
+
+non terminal String         bloqueResponse, paramsResponse, paramResponse;
+non terminal String         value, literal, state;
+
+
+
+
+inicio ::= startResponse
+         | startResponses
+         ;
+
+startResponses ::= LESS_THAN EXCLAMATION_MARK START_RESPONSES GREATER_THAN responses;
+
+responses ::= startResponse endResponses
+            | startResponse responses
+            ;
+
+startResponse ::= LESS_THAN EXCLAMATION_MARK START_RESPONSE COLON SERVER_RESPONSE startContent endContent endResponse;
+
+startContent ::= GREATER_THAN OPEN_BRACE RESPONSE_PARAMS COLON OPEN_BRACKET bloqueResponse;
+
+bloqueResponse ::= OPEN_BRACE paramsResponse CLOSE_BRACE        {:addRespuesta();:}
+                 ;
+
+paramsResponse ::= paramResponse COMMA paramsResponse
+                 | paramResponse
+                 ;
+
+paramResponse ::= PARAM_MESSAGE COLON literal:l     {:respuesta.setMessage(l);:}
+                | PARAM_LOGGED_USER COLON value:v   {:respuesta.setLoggedUser(v);:}
+                ;
+
+value ::= VALUE:v           {:RESULT = v;:}
+        ;
+
+literal ::= LITERAL:l        {:RESULT = l;:}
+         | value:v          {:RESULT = v;:}
+         ;
+
+endContent ::= CLOSE_BRACKET CLOSE_BRACE;
+
+endResponse ::= LESS_THAN END_RESPONSE EXCLAMATION_MARK GREATER_THAN;
+
+endResponses ::= LESS_THAN EXCLAMATION_MARK END_RESPONSES GREATER_THAN;
