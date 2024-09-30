@@ -86,10 +86,10 @@ terminal Token      START_REQUEST, START_REQUESTS, END_REQUEST, END_REQUESTS;
 terminal Token      USER_CREDENTIALS, FORM_PARAMS, COMPONENT_PARAMS;
 
 terminal Token      LOGIN, CREATE_USER, DELETE_USER, MODIFY_USER;
-terminal Token      PARAM_USUARIO, PARAM_NOMBRE, PARAM_PASSWORD, PARAM_FECHA_CREACION, PARAM_FECHA_MODIFICACION, PARAM_OLD_USER, PARAM_NEW_USER, PARAM_NEW_PASSWORD;
+terminal Token      PARAM_USUARIO, PARAM_NOMBRE, PARAM_PASSWORD, PARAM_FECHA_CREACION, PARAM_FECHA_MODIFICACION, PARAM_OLD_USER, PARAM_NEW_PASSWORD;
 
 terminal Token      NEW_FORM, DELETE_FORM, MODIFY_FORM;
-terminal Token      PARAM_ID, PARAM_TIEMPO_TRIV, PARAM_NOMBRE_FORM, PARAM_TEMA, PARAM_INSTITUCION, PARAM_USUARIO_CREACION;
+terminal Token      PARAM_ID, PARAM_TIEMPO_TRIV, PARAM_TEMA, PARAM_INSTITUCION, PARAM_USUARIO_CREACION;
 
 terminal Token      NEW_COMPONENT, DELETE_COMPONENT, EDIT_COMPONENT;
 terminal Token      PARAM_NOMBRE_CAMPO, PARAM_FORMULARIO, PARAM_CLASE, PARAM_INDICE, PARAM_TEXTO_VISIBLE;
@@ -255,7 +255,7 @@ paramModifyUser ::= nameParamModifyUser:n COLON value:v             {:RESULT = n
                     ;
 
 nameParamModifyUser ::= PARAM_OLD_USER:p                  {:RESULT = p.getLexema();:}
-                      | PARAM_NEW_USER:p                  {:RESULT = p.getLexema();:}
+                      | CREATE_USER:p                  {:RESULT = p.getLexema();:}
                       | PARAM_NEW_PASSWORD:p              {:RESULT = p.getLexema();:}
                       ;
 /************************Fin producciones para parametros de solicitud ModificarUsuario************************/       
@@ -312,7 +312,7 @@ paramNewForm ::= nameParamNewForm:n COLON value:v           {:RESULT = new Param
                | PARAM_TEMA:p COLON literal:l                  {:RESULT = new Parametro(p.getLexema(), l);:}
                ;
 
-nameParamNewForm ::= PARAM_NOMBRE_FORM:p            {:RESULT = p.getLexema();:}
+nameParamNewForm ::= PARAM_NOMBRE:p            {:RESULT = p.getLexema();:}
                    | PARAM_USUARIO_CREACION:p       {:RESULT = p.getLexema();:}
                    ;
 /**************************Fin de producciones para parametros de solicitud NuevaTrivia**************************/
@@ -361,7 +361,7 @@ paramsEditForm ::= paramEditForm:p COMMA paramsEditForm         {:addParameter(p
 
 paramEditForm ::= PARAM_ID:p COLON id:i                      {:RESULT = new Parametro(p.getLexema(), i);:}
                 | PARAM_TIEMPO_TRIV:p COLON entero:e        {:RESULT = new Parametro(p.getLexema(), e);:}
-                | PARAM_NOMBRE_FORM:p COLON value:v          {:RESULT = new Parametro(p.getLexema(), v);:}
+                | PARAM_NOMBRE:p COLON value:v          {:RESULT = new Parametro(p.getLexema(), v);:}
                 | PARAM_TEMA:p COLON literal:l                  {:RESULT = new Parametro(p.getLexema(), l);:}
                 ;
 /**************************Fin de producciones para parametros de solicitud ModifyTrivia**************************/
@@ -544,11 +544,9 @@ keyword ::= clase:c                     {:RESULT = c;:}
           | PARAM_FECHA_CREACION:k      {:RESULT = k.getLexema();:}
           | PARAM_FECHA_MODIFICACION:k  {:RESULT = k.getLexema();:}
           | PARAM_OLD_USER:k            {:RESULT = k.getLexema();:}
-          | PARAM_NEW_USER:k            {:RESULT = k.getLexema();:}
           | PARAM_NEW_PASSWORD:k        {:RESULT = k.getLexema();:}
           | PARAM_ID:k                  {:RESULT = k.getLexema();:}
           | PARAM_TIEMPO_TRIV:k         {:RESULT = k.getLexema();:}
-          | PARAM_NOMBRE_FORM:k         {:RESULT = k.getLexema();:}
           | PARAM_TEMA:k                {:RESULT = k.getLexema();:}
           | PARAM_USUARIO_CREACION:k    {:RESULT = k.getLexema();:}
           | PARAM_NOMBRE_CAMPO:k        {:RESULT = k.getLexema();:}

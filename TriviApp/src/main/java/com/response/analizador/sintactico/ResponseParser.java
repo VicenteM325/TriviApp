@@ -25,7 +25,7 @@ public class ResponseParser extends java_cup.runtime.lr_parser {
   public ResponseParser() {super();}
 
   /** Constructor which sets the default scanner. */
-  @Deprecated
+
   public ResponseParser(java_cup.runtime.Scanner s) {super(s);}
 
   /** Constructor which sets the default scanner. */

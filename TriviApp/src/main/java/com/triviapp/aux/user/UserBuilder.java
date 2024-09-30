@@ -46,7 +46,7 @@ public class UserBuilder {
         
         solicitud.getParametros().forEach(p -> {
             if (p.getName().contains("USUARIO_ANTIGUO")) {
-                user.setNombre(getValue(p.getValue()));
+                user.setUsuario(getValue(p.getValue()));
             }
         });
         
@@ -58,7 +58,7 @@ public class UserBuilder {
         
         solicitud.getParametros().forEach(p -> {
             if (p.getName().contains("USUARIO_NUEVO")) {
-                user.setNombre(getValue(p.getValue()));
+                user.setUsuario(getValue(p.getValue()));
             } else if (p.getName().contains("NUEVO_PASSWORD")) {
                 user.setPassword(getValue(p.getValue()));
             } else if (p.getName().contains("MODIFICACION")) {

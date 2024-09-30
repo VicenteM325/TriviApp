@@ -84,13 +84,11 @@ LITERAL = "\""[^"\""]*"\""
 <YYINITIAL> "\""(\s)*("FECHA_CREACION")(\s)*"\""            {return symbol(PARAM_FECHA_CREACION);}
 <YYINITIAL> "\""(\s)*("FECHA_MODIFICACION")(\s)*"\""        {return symbol(PARAM_FECHA_MODIFICACION);}
 <YYINITIAL> "\""(\s)*("USUARIO_ANTIGUO")(\s)*"\""           {return symbol(PARAM_OLD_USER);}
-<YYINITIAL> "\""(\s)*("USUARIO_NUEVO")(\s)*"\""             {return symbol(PARAM_NEW_USER);}
 <YYINITIAL> "\""(\s)*("NUEVO_PASSWORD")(\s)*"\""            {return symbol(PARAM_NEW_PASSWORD);}
 
 //Trivias
 <YYINITIAL> "\""(\s)*("ID_TRIVIA")(\s)*"\""                 {return symbol(PARAM_ID);}
 <YYINITIAL> "\""(\s)*("TIEMPO_PREGUNTA")(\s)*"\""           {return symbol(PARAM_TIEMPO_TRIV);}
-<YYINITIAL> "\""(\s)*("NOMBRE")(\s)*"\""                    {return symbol(PARAM_NOMBRE_FORM);}
 <YYINITIAL> "\""(\s)*("TEMA")(\s)*"\""                      {return symbol(PARAM_TEMA);}
 <YYINITIAL> "\""(\s)*("USUARIO_CREACION")(\s)*"\""          {return symbol(PARAM_USUARIO_CREACION);}
 

@@ -1,6 +1,6 @@
 package com.response.analizador.sintactico;
 
-import com.response.model.Respuesta;
+import com.response.modelo.Respuesta;
 import java.util.ArrayList;
 import java.util.List;
 import java_cup.runtime.Symbol;
@@ -77,6 +77,6 @@ literal ::= LITERAL:l        {:RESULT = l;:}
 
 endContent ::= CLOSE_BRACKET CLOSE_BRACE;
 
-endResponse ::= LESS_THAN END_RESPONSE EXCLAMATION_MARK GREATER_THAN;
+endResponse ::= LESS_THAN EXCLAMATION_MARK END_RESPONSE  GREATER_THAN;
 
 endResponses ::= LESS_THAN EXCLAMATION_MARK END_RESPONSES GREATER_THAN;

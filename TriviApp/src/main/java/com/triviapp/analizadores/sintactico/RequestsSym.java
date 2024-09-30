@@ -8,69 +8,67 @@ package com.triviapp.analizadores.sintactico;
 /** CUP generated class containing symbol constants. */
 public class RequestsSym {
   /* terminals */
-  public static final int PARAM_NEW_USER = 19;
-  public static final int PARAM_ID = 24;
-  public static final int EDIT_COMPONENT = 32;
-  public static final int PARAM_TEXTO_VISIBLE = 37;
-  public static final int ENTERO = 62;
-  public static final int CLASS_RADIO = 45;
-  public static final int PARAM_CLASE = 35;
-  public static final int NEW_FORM = 21;
-  public static final int FECHA = 60;
-  public static final int CLASS_CHECKBOX = 44;
-  public static final int GREATER_THAN = 50;
-  public static final int CLASS_COMBO = 47;
+  public static final int PARAM_ID = 23;
+  public static final int EDIT_COMPONENT = 30;
+  public static final int PARAM_TEXTO_VISIBLE = 35;
+  public static final int ENTERO = 60;
+  public static final int CLASS_RADIO = 43;
+  public static final int PARAM_CLASE = 33;
+  public static final int NEW_FORM = 20;
+  public static final int FECHA = 58;
+  public static final int CLASS_CHECKBOX = 42;
+  public static final int GREATER_THAN = 48;
+  public static final int CLASS_COMBO = 45;
   public static final int END_REQUEST = 4;
-  public static final int PARAM_TEMA = 27;
+  public static final int PARAM_TEMA = 25;
   public static final int PARAM_OLD_USER = 18;
-  public static final int PARAM_RESPUESTAS = 41;
-  public static final int PARAM_NOMBRE_CAMPO = 33;
-  public static final int COMMA = 53;
+  public static final int PARAM_RESPUESTAS = 39;
+  public static final int PARAM_NOMBRE_CAMPO = 31;
+  public static final int COMMA = 51;
   public static final int END_REQUESTS = 5;
-  public static final int PARAM_FORMULARIO = 34;
-  public static final int CLASS_CAMPO_TEXTO = 42;
-  public static final int ID = 59;
+  public static final int PARAM_FORMULARIO = 32;
+  public static final int CLASS_CAMPO_TEXTO = 40;
+  public static final int ID = 57;
   public static final int CREATE_USER = 10;
   public static final int EOF = 0;
   public static final int PARAM_FECHA_CREACION = 16;
-  public static final int PARAM_NOMBRE_FORM = 26;
   public static final int DELETE_USER = 11;
   public static final int error = 1;
   public static final int COMPONENT_PARAMS = 8;
   public static final int PARAM_PASSWORD = 15;
-  public static final int OPEN_BRACE = 54;
-  public static final int CLASS_AREA_TEXTO = 43;
-  public static final int PARAM_FILAS = 39;
-  public static final int CLOSE_BRACKET = 57;
+  public static final int OPEN_BRACE = 52;
+  public static final int CLASS_AREA_TEXTO = 41;
+  public static final int PARAM_FILAS = 37;
+  public static final int CLOSE_BRACKET = 55;
   public static final int PARAM_NOMBRE = 14;
-  public static final int OPEN_BRACKET = 56;
-  public static final int PARAM_USUARIO_CREACION = 29;
-  public static final int DELETE_FORM = 22;
+  public static final int OPEN_BRACKET = 54;
+  public static final int PARAM_USUARIO_CREACION = 27;
+  public static final int DELETE_FORM = 21;
   public static final int USER_CREDENTIALS = 6;
-  public static final int PARAM_INDICE = 36;
+  public static final int PARAM_INDICE = 34;
   public static final int START_REQUEST = 2;
-  public static final int LITERAL = 61;
-  public static final int COLON = 52;
+  public static final int LITERAL = 59;
+  public static final int COLON = 50;
   public static final int PARAM_FECHA_MODIFICACION = 17;
   public static final int START_REQUESTS = 3;
   public static final int MODIFY_USER = 12;
-  public static final int DELETE_COMPONENT = 31;
-  public static final int PARAM_TIEMPO_TRIV = 25;
+  public static final int DELETE_COMPONENT = 29;
+  public static final int PARAM_TIEMPO_TRIV = 24;
   public static final int LOGIN = 9;
-  public static final int CLASS_FICHERO = 46;
-  public static final int PARAM_COLUMNAS = 40;
+  public static final int CLASS_FICHERO = 44;
+  public static final int PARAM_COLUMNAS = 38;
   public static final int FORM_PARAMS = 7;
-  public static final int NEW_COMPONENT = 30;
-  public static final int MODIFY_FORM = 23;
-  public static final int CLOSE_BRACE = 55;
-  public static final int VALUE = 58;
-  public static final int PARAM_NEW_PASSWORD = 20;
-  public static final int EXCLAMATION_MARK = 51;
-  public static final int PARAM_OPCIONES = 38;
-  public static final int LESS_THAN = 49;
+  public static final int NEW_COMPONENT = 28;
+  public static final int MODIFY_FORM = 22;
+  public static final int CLOSE_BRACE = 53;
+  public static final int VALUE = 56;
+  public static final int PARAM_NEW_PASSWORD = 19;
+  public static final int EXCLAMATION_MARK = 49;
+  public static final int PARAM_OPCIONES = 36;
+  public static final int LESS_THAN = 47;
   public static final int PARAM_USUARIO = 13;
-  public static final int PARAM_INSTITUCION = 28;
-  public static final int OPCIONES = 48;
+  public static final int PARAM_INSTITUCION = 26;
+  public static final int OPCIONES = 46;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -91,14 +89,12 @@ public class RequestsSym {
   "PARAM_FECHA_CREACION",
   "PARAM_FECHA_MODIFICACION",
   "PARAM_OLD_USER",
-  "PARAM_NEW_USER",
   "PARAM_NEW_PASSWORD",
   "NEW_FORM",
   "DELETE_FORM",
   "MODIFY_FORM",
   "PARAM_ID",
   "PARAM_TIEMPO_TRIV",
-  "PARAM_NOMBRE_FORM",
   "PARAM_TEMA",
   "PARAM_INSTITUCION",
   "PARAM_USUARIO_CREACION",

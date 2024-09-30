@@ -23,8 +23,6 @@ public class ComponentBuilder {
         solicitud.getParametros().forEach(p -> {
             if (p.getName().replaceAll("\\s", "").replace("\"", "").equals("ID")) {
                 component.setId(getValue(p));
-            } else if (p.getName().contains("ID")) {
-                component.setFormulario(getValue(p));
             } else if (p.getName().contains("TRIVIA")) {
                 component.setFormulario(getValue(p));
             } else if (p.getName().contains("CLASE")) {

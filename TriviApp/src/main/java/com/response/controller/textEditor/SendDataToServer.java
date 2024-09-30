@@ -1,4 +1,4 @@
-package com.response.controller;
+package com.response.controller.textEditor;
 
 import java.io.IOException;
 import java.net.URI;

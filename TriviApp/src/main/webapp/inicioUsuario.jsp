@@ -1,5 +1,6 @@
 <%@page import="java.util.List"%>
 <%@page import="com.triviapp.modelo.Formulario"%>
+<%@page import="com.triviapp.modelo.Usuario"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -70,6 +71,23 @@
                                 %>
                             </tbody>
                         </table>
+
+                        <!-- Formulario para enviar solicitud -->
+                        <h5>Enviar Solicitud al Servidor</h5>
+                        <form id="requestForm">
+                            <div class="form-group">
+                                <label for="loggedUser">Usuario:</label>
+                                <input type="text" id="loggedUser" class="form-control" value="${user.nombre}" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="requestData">Datos de Solicitud:</label>
+                                <textarea id="requestData" class="form-control" rows="5" placeholder="Escribe tu solicitud aquí..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
+                        </form>
+
+                        <div id="response" class="mt-3"></div>
+
                     </div>
                 </div>
             </div>
@@ -80,15 +98,30 @@
     <jsp:include page="/WEB-INF/extras/extrasJS.jsp"/>
 
     <script>
-        function copyTC(value) {
-            const t = document.createElement('textarea');
-            t.value = value;
-            t.style.visibility = false;
-            document.body.appendChild(t);
-            t.select();
-            document.execCommand('copy');
-            t.parentElement.removeChild(t);
-        }
+        document.getElementById('requestForm').addEventListener('submit', function (event) {
+            event.preventDefault(); 
+
+            const loggedUser = document.getElementById('loggedUser').value.trim();
+            const requestData = document.getElementById('requestData').value.trim();
+
+            fetch('<%= request.getContextPath() %>/requestReader', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'loggedUser': loggedUser 
+                },
+                body: JSON.stringify({ data: requestData }) 
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('response').innerText = data; 
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('response').innerText = 'Error al enviar la solicitud.';
+            });
+        });
     </script>
 </body>
 </html>
+

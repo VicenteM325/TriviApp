@@ -51,16 +51,16 @@ public class RequestExecutor {
                 
                 if (solicitudes.size() > 1) {
                     StringBuilder temp = answer;
-                    answer = new StringBuilder("<!ini_respuestas>\n");
+                    answer = new StringBuilder("<!envio_respuestas>\n");
                     answer.append(temp.toString());
-                    addLinea("<!fin_respuestas>");
+                    addLinea("<!fin_envio_respuestas>");
                 }
             } else {
                 
                 if (errores.size() > 1) {
-                    addLinea("<!ini_respuestas>");
+                    addLinea("<!envio_respuestas>");
                     errores.forEach(e -> addResponse(e.getDescripcion().replace("\"", "")));
-                    addLinea("<!fin_respuestas>");
+                    addLinea("<!fin_envio_respuesta>");
                 } else {
                     errores.forEach(e -> addResponse(e.getDescripcion().replace("\"", "")));
                 }

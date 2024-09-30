@@ -34,14 +34,20 @@ public class InicioServlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Formulario> forms = formDAO.getList();
-        List<Formulario> formsUser = new ArrayList();
         Usuario user = (Usuario) request.getSession().getAttribute("user");
-        forms.forEach(f -> {
-            if (f.getUsuarioCreacion().equals(user.getNombre())) {
-                formsUser.add(f);
-            }
-        });
+        
+        if (user == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+
+        List<Formulario> formsUser = new ArrayList<>();
+        forms.stream()
+             .filter(f -> f.getUsuarioCreacion().equals(user.getNombre()))
+             .forEach(formsUser::add);
+
         request.setAttribute("formularios", formsUser);
+
         request.getRequestDispatcher("inicioUsuario.jsp").forward(request, response);
     }
 

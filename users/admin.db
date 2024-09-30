@@ -1,7 +1,0 @@
-db.user(
-    {
-        "USUARIO" : "admin",
-        "PASSWORD" : "admin",
-        "FECHA_CREACION" : "2024-09-29"
-    }
-)
