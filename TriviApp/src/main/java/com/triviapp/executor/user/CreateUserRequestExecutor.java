@@ -11,7 +11,8 @@ import com.triviapp.modelo.solicitudes.Solicitud;
  *
  * @author vicente
  */
-public class CreateUserRequestExecutor extends Executor{
+public class CreateUserRequestExecutor extends Executor {
+    
     private final CRUD<Usuario> usuarioDAO;
     private UserBuilder userBuilder;
 
@@ -37,4 +38,5 @@ public class CreateUserRequestExecutor extends Executor{
         
         return response.toString();
     }
+
 }

@@ -34,24 +34,29 @@ public class ModifyUserRequestExecutor extends Executor {
         userBuilder = new UserBuilder(s);
 
         var u = userBuilder.buildOld();
-        if (usuarioDAO.exists(u.getUsuario())) {
-            var oldUser = usuarioDAO.getObject(u.getUsuario());
+        if (usuarioDAO.exists(u.getNombre())) {
+            var oldUser = usuarioDAO.getObject(u.getNombre());
             var newUser = userBuilder.buildNew();
-            newUser.setFechaCreacion(oldUser.getFechaCreacion());
             
+            if(newUser.getInstitucion()==null){
+               newUser.setInstitucion(oldUser.getInstitucion());
+            }
+            newUser.setName(oldUser.getName());
+            newUser.setFechaCreacion(oldUser.getFechaCreacion());
+
             List<Formulario> forms = formDAO.getList();
             forms.forEach(f -> {
-                if (f.getUsuarioCreacion().equals(oldUser.getUsuario())) {
-                    f.setUsuarioCreacion(newUser.getUsuario());
+                if (f.getUsuarioCreacion().equals(oldUser.getNombre())) {
+                    f.setUsuarioCreacion(newUser.getNombre());
                     formDAO.create(f);
                 }
             });
-            usuarioDAO.delete(oldUser.getUsuario());
+            usuarioDAO.delete(oldUser.getNombre());
             usuarioDAO.create(newUser);
 
-            response.append(new ResponseStructureGenerator(new Response("Se modifico el usuario " + oldUser.getUsuario(), newUser.getUsuario())).generate());
+            response.append(new ResponseStructureGenerator(new Response("Se modifico el usuario " + oldUser.getNombre(), newUser.getNombre())).generate());
         } else {
-            addResponse("No se puede modificar, el usuario " + u.getUsuario() + " no existe");
+            addResponse("No se puede modificar, el usuario " + u.getNombre() + " no existe");
         }
         
         return response.toString();

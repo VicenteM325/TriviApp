@@ -41,12 +41,12 @@ public class CreateComponentRequestExecutor extends Executor {
             if (!exists) {
                 form.getComponentes().add(component);
                 formDAO.create(form);
-                addResponse("Componente " + component.getId() + " agregado al formulario " + form.getId());
+                addResponse("Componente " + component.getId() + " agregado a la Trivia " + form.getId());
             } else {
-                addResponse("Ya existe el componente " + component.getId() + " en el formulario " + form.getId());
+                addResponse("Ya existe el componente " + component.getId() + " en la Trivia " + form.getId());
             }
         } else {
-            addResponse("No existe el formulario " + component.getFormulario());
+            addResponse("No existe la Trivia " + component.getFormulario());
         }
         
         return response.toString();

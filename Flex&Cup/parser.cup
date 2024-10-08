@@ -86,22 +86,22 @@ terminal Token      START_REQUEST, START_REQUESTS, END_REQUEST, END_REQUESTS;
 terminal Token      USER_CREDENTIALS, FORM_PARAMS, COMPONENT_PARAMS;
 
 terminal Token      LOGIN, CREATE_USER, DELETE_USER, MODIFY_USER;
-terminal Token      PARAM_USUARIO, PARAM_NOMBRE, PARAM_PASSWORD, PARAM_FECHA_CREACION, PARAM_FECHA_MODIFICACION, PARAM_OLD_USER, PARAM_NEW_PASSWORD;
+terminal Token      PARAM_USUARIO, PARAM_PASSWORD, PARAM_NOMBRE,PARAM_INSTITUCION,PARAM_FECHA_CREACION, PARAM_FECHA_MODIFICACION, PARAM_OLD_USER, PARAM_NEW_USER, PARAM_NEW_PASSWORD;
 
 terminal Token      NEW_FORM, DELETE_FORM, MODIFY_FORM;
-terminal Token      PARAM_ID, PARAM_TIEMPO_TRIV, PARAM_TEMA, PARAM_INSTITUCION, PARAM_USUARIO_CREACION;
+terminal Token      PARAM_ID, PARAM_IDC, PARAM_TIEMPO, PARAM_TEMA, PARAM_USUARIO_CREACION;
 
 terminal Token      NEW_COMPONENT, DELETE_COMPONENT, EDIT_COMPONENT;
-terminal Token      PARAM_NOMBRE_CAMPO, PARAM_FORMULARIO, PARAM_CLASE, PARAM_INDICE, PARAM_TEXTO_VISIBLE;
-terminal Token      PARAM_OPCIONES, PARAM_FILAS, PARAM_COLUMNAS, PARAM_RESPUESTAS;
+terminal Token      PARAM_NOMBRE_CAMPO, PARAM_FORMULARIO, PARAM_CLASE, PARAM_INDICE, PARAM_TEXTO_VISIBLE, PARAM_RESPUESTA;
+terminal Token      PARAM_OPCIONES, PARAM_FILAS, PARAM_COLUMNAS;
 terminal Token      CLASS_CAMPO_TEXTO, CLASS_AREA_TEXTO, CLASS_CHECKBOX, CLASS_RADIO, CLASS_FICHERO, CLASS_COMBO;
 terminal Token      OPCIONES;
 
-terminal Token      LESS_THAN, GREATER_THAN, EXCLAMATION_MARK, COLON, COMMA, OPEN_BRACE, CLOSE_BRACE, OPEN_BRACKET, CLOSE_BRACKET;
-terminal Token      VALUE, ID, FECHA, LITERAL, ENTERO;
+terminal Token      LESS_THAN, GREATER_THAN, EXCLAMATION_MARK, COLON, COMMA, OPEN_BRACE, CLOSE_BRACE, OPEN_BRACKET, CLOSE_BRACKET, EQUALS, QUESTION_MARK;
+terminal Token      VALUE, ID, FECHA, LITERAL, ENTERO, XSON, VERSION, QUINV;
 
 //no terminales
-non terminal        inicio, startRequests, requests, endRequests, startRequest, endRequest;
+non terminal        inicio, encabezado, XML_HEADER, startRequests, requests, endRequests, startRequest, endRequest;
 non terminal        requestType, startContentUser, startContentForm, startContentComponent, endContent;
 
 non terminal        bloquesLogin, bloquesCreateUser, bloquesModifyUser, bloquesDeleteUser;
@@ -121,17 +121,21 @@ non terminal                    paramsNewForm, paramsEditForm;
 non terminal Parametro          paramNewForm, paramEditForm, paramDeleteForm;
 non terminal String             nameParamNewForm;
 
-
 non terminal                    paramsNewComponent, paramsEditComponent, paramsDeleteComponent;
 non terminal Parametro          paramNewComponent, paramEditComponent, paramDeleteComponent;
 non terminal String             nameParamNewComponent, nameParamEditComponent;
-non terminal String             clase,opciones;
+non terminal String             clase, alineacion, required, opciones;
 
 non terminal String             value, id, fecha, literal, entero, keyword;
 
-inicio ::= startRequest
-         | startRequests
+inicio ::= encabezado startRequest
+         | encabezado startRequests
          ;
+
+encabezado ::= XML_HEADER 
+             ;
+
+XML_HEADER ::= LESS_THAN QUESTION_MARK XSON VERSION EQUALS QUINV QUESTION_MARK GREATER_THAN;  
 
 startRequests ::= LESS_THAN EXCLAMATION_MARK START_REQUESTS GREATER_THAN requests;
 
@@ -217,13 +221,14 @@ paramsCreateUser ::= paramCreateUser:p COMMA paramsCreateUser   {:addParameter(p
                    ;
      
 paramCreateUser ::= nameParamCreateUser:n COLON value:v         {:RESULT = new Parametro(n, v);:}
+                  | PARAM_NOMBRE:p  COLON literal:l               {:RESULT = new Parametro(p.getLexema(), l);:}
+                  | PARAM_INSTITUCION:p COLON literal:l           {:RESULT = new Parametro(p.getLexema(), l);:}
                   | PARAM_FECHA_CREACION:p COLON fecha:f        {:RESULT = new Parametro(p.getLexema(), f);:}
                   ;
 
 nameParamCreateUser ::= PARAM_USUARIO:p               {:RESULT = p.getLexema();:}
                       | PARAM_PASSWORD:p              {:RESULT = p.getLexema();:}
-                      | PARAM_NOMBRE:p                {:RESULT = p.getLexema();:}
-                      | PARAM_INSTITUCION:p           {:RESULT = p.getLexema();:}
+
                       ;
 /****************************Fin producciones para parametros de solicitud CrearUsuario****************************/      
 
@@ -251,6 +256,7 @@ paramsModifyUser ::= paramModifyUser:p COMMA paramsModifyUser     {:addParameter
                    ;
 
 paramModifyUser ::= nameParamModifyUser:n COLON value:v             {:RESULT = new Parametro(n, v);:}
+                  | PARAM_INSTITUCION:p  COLON literal:l            {:RESULT = new Parametro(p.getLexema(), l);:}
                   | PARAM_FECHA_MODIFICACION:p COLON fecha:f        {:RESULT = new Parametro(p.getLexema(), f);:}
                     ;
 
@@ -308,12 +314,12 @@ paramsNewForm ::= paramNewForm:p COMMA paramsNewForm        {:addParameter(p);:}
 paramNewForm ::= nameParamNewForm:n COLON value:v           {:RESULT = new Parametro(n, v);:}
                | PARAM_ID:p COLON id:i                      {:RESULT = new Parametro(p.getLexema(), i);:}
                | PARAM_FECHA_CREACION:p COLON fecha:f       {:RESULT = new Parametro(p.getLexema(), f);:}
-               | PARAM_TIEMPO_TRIV:p COLON entero:e        {:RESULT = new Parametro(p.getLexema(), e);:}
-               | PARAM_TEMA:p COLON literal:l                  {:RESULT = new Parametro(p.getLexema(), l);:}
+               | PARAM_NOMBRE:p COLON literal:l               {:RESULT = new Parametro(p.getLexema(), l);:}
+               | PARAM_TIEMPO:p COLON entero:e              {:RESULT = new Parametro(p.getLexema(), e);:}
+               | PARAM_TEMA:p COLON literal:l                 {:RESULT = new Parametro(p.getLexema(), l);:}
                ;
 
-nameParamNewForm ::= PARAM_NOMBRE:p            {:RESULT = p.getLexema();:}
-                   | PARAM_USUARIO_CREACION:p       {:RESULT = p.getLexema();:}
+nameParamNewForm ::= PARAM_USUARIO_CREACION:p       {:RESULT = p.getLexema();:}
                    ;
 /**************************Fin de producciones para parametros de solicitud NuevaTrivia**************************/
 
@@ -360,8 +366,8 @@ paramsEditForm ::= paramEditForm:p COMMA paramsEditForm         {:addParameter(p
                  ;
 
 paramEditForm ::= PARAM_ID:p COLON id:i                      {:RESULT = new Parametro(p.getLexema(), i);:}
-                | PARAM_TIEMPO_TRIV:p COLON entero:e        {:RESULT = new Parametro(p.getLexema(), e);:}
-                | PARAM_NOMBRE:p COLON value:v          {:RESULT = new Parametro(p.getLexema(), v);:}
+                | PARAM_TIEMPO:p COLON entero:e             {:RESULT = new Parametro(p.getLexema(), e);:}
+                | PARAM_NOMBRE:p COLON literal:l              {:RESULT = new Parametro(p.getLexema(), l);:}
                 | PARAM_TEMA:p COLON literal:l                  {:RESULT = new Parametro(p.getLexema(), l);:}
                 ;
 /**************************Fin de producciones para parametros de solicitud ModifyTrivia**************************/
@@ -401,14 +407,14 @@ paramsNewComponent ::= paramNewComponent:p COMMA paramsNewComponent         {:ad
                      ;
 
 paramNewComponent ::= nameParamNewComponent:n COLON value:v         {:RESULT = new Parametro(n, v);:}
-                    | PARAM_ID:p COLON id:i                         {:RESULT = new Parametro(p.getLexema(), i);:}
+                    | PARAM_IDC:p COLON id:i                        {:RESULT = new Parametro(p.getLexema(), i);:}
                     | PARAM_FORMULARIO:p COLON id:i                 {:RESULT = new Parametro(p.getLexema(), i);:}
                     | PARAM_CLASE:p COLON clase:c                   {:RESULT = new Parametro(p.getLexema(), c);:}
                     | PARAM_TEXTO_VISIBLE:p COLON literal:l         {:RESULT = new Parametro(p.getLexema(), l);:}
+                    | PARAM_RESPUESTA:p COLON literal:l             {:RESULT = new Parametro(p.getLexema(), l);:}
                     | PARAM_OPCIONES:p COLON opciones:o             {:RESULT = new Parametro(p.getLexema(), o);:}
-                    | PARAM_FILAS:p COLON entero:e                  {:RESULT = new Parametro(p.getLexema(), e);:}
-                    | PARAM_COLUMNAS:p COLON entero:e               {:RESULT = new Parametro(p.getLexema(), e);:}
-                    | PARAM_RESPUESTAS:p COLON literal:l         {:RESULT = new Parametro(p.getLexema(), l);:}
+                    | PARAM_FILAS:p COLON literal:l                  {:RESULT = new Parametro(p.getLexema(), l);:}
+                    | PARAM_COLUMNAS:p COLON literal:l               {:RESULT = new Parametro(p.getLexema(), l);:}
                     ;
 
 nameParamNewComponent ::= PARAM_NOMBRE_CAMPO:p          {:RESULT = p.getLexema();:}
@@ -449,15 +455,14 @@ paramsEditComponent ::= paramEditComponent:p COMMA paramsEditComponent        {:
                       ;
 
 paramEditComponent ::= nameParamEditComponent:n COLON value:v         {:RESULT = new Parametro(n, v);:}
-                     | PARAM_ID:p COLON id:i                         {:RESULT = new Parametro(p.getLexema(), i);:}
+                     | PARAM_IDC:p COLON id:i                         {:RESULT = new Parametro(p.getLexema(), i);:}
                      | PARAM_FORMULARIO:p COLON id:i                 {:RESULT = new Parametro(p.getLexema(), i);:}
                      | PARAM_CLASE:p COLON clase:c                   {:RESULT = new Parametro(p.getLexema(), c);:}
                      | PARAM_TEXTO_VISIBLE:p COLON literal:l         {:RESULT = new Parametro(p.getLexema(), l);:}
                      | PARAM_OPCIONES:p COLON opciones:o             {:RESULT = new Parametro(p.getLexema(), o);:}
-                     | PARAM_FILAS:p COLON entero:e                  {:RESULT = new Parametro(p.getLexema(), e);:}
-                     | PARAM_COLUMNAS:p COLON entero:e               {:RESULT = new Parametro(p.getLexema(), e);:}
-                     | PARAM_INDICE:p COLON entero:e                 {:RESULT = new Parametro(p.getLexema(), e);:}
-                     | PARAM_RESPUESTAS:p COLON literal:l         {:RESULT = new Parametro(p.getLexema(), l);:}
+                     | PARAM_FILAS:p COLON literal:l                  {:RESULT = new Parametro(p.getLexema(), l);:}
+                     | PARAM_COLUMNAS:p COLON literal:l               {:RESULT = new Parametro(p.getLexema(), l);:}
+                     | PARAM_INDICE:p COLON literal:l                 {:RESULT = new Parametro(p.getLexema(), l);:}
                      ;
 
 nameParamEditComponent ::= PARAM_NOMBRE_CAMPO:p          {:RESULT = p.getLexema();:}
@@ -486,7 +491,7 @@ bloqueDeleteComponent ::= OPEN_BRACE:o paramsDeleteComponent CLOSE_BRACE
 paramsDeleteComponent ::= paramDeleteComponent:p COMMA paramsDeleteComponent      {:addParameter(p);:}
                         | paramDeleteComponent:p                                  {:addParameter(p);:}                        ;
 
-paramDeleteComponent ::= PARAM_ID:p COLON id:i              {:RESULT = new Parametro(p.getLexema(), i);:}
+paramDeleteComponent ::= PARAM_IDC:p COLON id:i              {:RESULT = new Parametro(p.getLexema(), i);:}
                        | PARAM_FORMULARIO:p COLON id:i      {:RESULT = new Parametro(p.getLexema(), i);:}
                        ;
 /**************************Fin de producciones para parametros de solicitud DeleteComponent**************************/
@@ -521,6 +526,7 @@ clase ::= CLASS_CAMPO_TEXTO:c     {:RESULT = c.getLexema();:}
         ;
 
 
+
 opciones ::= OPCIONES:o         {:RESULT = o.getLexema();:}
            | value:v            {:RESULT = v;:}
            ;
@@ -541,12 +547,15 @@ keyword ::= clase:c                     {:RESULT = c;:}
           | COMPONENT_PARAMS:k          {:RESULT = k.getLexema();:}
           | PARAM_USUARIO:k             {:RESULT = k.getLexema();:}
           | PARAM_PASSWORD:k            {:RESULT = k.getLexema();:}
+          | PARAM_NOMBRE:k              {:RESULT = k.getLexema();:}
+          | PARAM_INSTITUCION:k         {:RESULT = k.getLexema();:}
           | PARAM_FECHA_CREACION:k      {:RESULT = k.getLexema();:}
           | PARAM_FECHA_MODIFICACION:k  {:RESULT = k.getLexema();:}
           | PARAM_OLD_USER:k            {:RESULT = k.getLexema();:}
+          | PARAM_NEW_USER:k            {:RESULT = k.getLexema();:}
           | PARAM_NEW_PASSWORD:k        {:RESULT = k.getLexema();:}
           | PARAM_ID:k                  {:RESULT = k.getLexema();:}
-          | PARAM_TIEMPO_TRIV:k         {:RESULT = k.getLexema();:}
+          | PARAM_IDC:k                 {:RESULT = k.getLexema();:}
           | PARAM_TEMA:k                {:RESULT = k.getLexema();:}
           | PARAM_USUARIO_CREACION:k    {:RESULT = k.getLexema();:}
           | PARAM_NOMBRE_CAMPO:k        {:RESULT = k.getLexema();:}

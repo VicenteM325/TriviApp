@@ -29,12 +29,12 @@ public class CreateFormRequestExecutor extends Executor {
         if (!formDAO.exists(form.getId())) {
             if (form.getUsuarioCreacion().equals(loggedUser)) {
                 formDAO.create(form);
-                addResponse("Formulario " + form.getId() + " creado exitosamente");
+                addResponse("Trivia " + form.getId() + " creada exitosamente");
             } else {
-                addResponse("El usuario ingresado en el formulario " + form.getId() + " no es el que esta logueado actualmente");
+                addResponse("El usuario ingresado en la trivia " + form.getId() + " no es el que esta logueado actualmente");
             }
         } else {
-            addResponse("No se puede crear, el formulario " + form.getId() + " ya existe");
+            addResponse("No se puede crear la trivia " + form.getId() + " ya existe");
         }
 
         return response.toString();

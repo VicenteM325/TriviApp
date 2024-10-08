@@ -35,16 +35,18 @@ public class ModifyComponentRequestExecutor extends Executor {
             
             if (index != -1) {
                 boolean canCreated = true;
-                boolean hasFieldName = comp.getFormulario()!= null;
+              //  boolean hasFieldName = comp.getNombreCampo()!= null;
                 boolean hasVisibleText = comp.getTextoVisible()!= null;
+                boolean hasRespuesta = comp.getRespuesta()!= null;
                 boolean hasOptions = comp.getOpciones() != null;
                 boolean hasRows = comp.getNoFilas()!= null;
                 boolean hasColumns = comp.getNoColumnas()!= null;
                 var compForm = componentes.get(index);
 
                 if (comp.getClase() != null) {
-                    if (hasFieldName) compForm.setFormulario(comp.getFormulario());
+                 //   if (hasFieldName) compForm.setNombreCampo(comp.getNombreCampo());
                     if (hasVisibleText) compForm.setTextoVisible(comp.getTextoVisible());
+                    if (hasRespuesta) compForm.setRespuesta(comp.getRespuesta());
                     if (hasOptions) compForm.setOpciones(comp.getOpciones());
                     if (hasRows) compForm.setNoFilas(comp.getNoFilas());
                     if (hasColumns) compForm.setNoColumnas(comp.getNoColumnas());
@@ -61,7 +63,7 @@ public class ModifyComponentRequestExecutor extends Executor {
                         }
                         
                         case "CHECKBOX", "RADIO", "COMBO" -> {
-                            if (hasRows | hasColumns) {
+                            if (hasRows | hasColumns ) {
                                 canCreated = false;
                                 addResponse("No se puede modificar el componente " + compForm.getId() + " se ingresaron parametros que no coinciden con la clase " + compForm.getClase());
                             } else {
@@ -70,7 +72,7 @@ public class ModifyComponentRequestExecutor extends Executor {
                         }
                         
                         case "AREA_TEXTO" -> {
-                            if (hasOptions) {
+                            if ( hasOptions) {
                                 canCreated = false;
                                 addResponse("No se puede modificar el componente " + compForm.getId() + " se ingresaron parametros que no coinciden con la clase " + compForm.getClase());
                             } else {
@@ -79,24 +81,22 @@ public class ModifyComponentRequestExecutor extends Executor {
                             }
                         }
                         
-                        case "IMAGEN" -> {
-                            if (hasOptions | hasRows | hasColumns | hasFieldName) {
+                        case "RESPUESTA" -> {
+                            if (hasRespuesta) {
                                 canCreated = false;
                                 addResponse("No se puede modificar el componente " + compForm.getId() + " se ingresaron parametros que no coinciden con la clase " + compForm.getClase());
-                            } 
+                            } else {
+                                if (hasRespuesta) compForm.setRespuesta(comp.getRespuesta());
+                            }
                         }
-                        
                     }
+
                     
                     switch (compForm.getClase()) {
                         case "CAMPO_TEXTO", "FICHERO", "CHECKBOX", "RADIO", "COMBO", "AREA_TEXTO" -> {
-                            if (hasFieldName) compForm.setFormulario(comp.getFormulario());
+                          //  if (hasFieldName) compForm.setNombreCampo(comp.getNombreCampo());
                             if (hasVisibleText) compForm.setTextoVisible(comp.getTextoVisible());
-
                             
-                        }
-                        case "IMAGEN", "BOTON" -> {
-                            if (hasVisibleText) compForm.setTextoVisible(comp.getTextoVisible());
                         }
                     }
                 }
@@ -118,11 +118,11 @@ public class ModifyComponentRequestExecutor extends Executor {
                 }
                 
             } else {
-                addResponse("No existe el componente " + comp.getId() + " en el formulario " + form.getId());
+                addResponse("No existe el componente " + comp.getId() + " en la Trivia " + form.getId());
             }
             
         } else {
-            addResponse("El formulario " + comp.getFormulario() + " no existe");
+            addResponse("La Trivia " + comp.getFormulario() + " no existe");
         }
 
         return response.toString();

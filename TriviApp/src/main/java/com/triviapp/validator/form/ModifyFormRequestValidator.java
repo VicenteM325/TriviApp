@@ -10,6 +10,7 @@ import java.util.List;
  * @author vicente
  */
 public class ModifyFormRequestValidator extends Validator {
+
     @Override
     public String validate(Token o, List<Parametro> params) {
         error = new StringBuilder("");
@@ -19,7 +20,7 @@ public class ModifyFormRequestValidator extends Validator {
         
         for (Parametro p : params) {
             switch (getName(p)) {
-                case "TITULO" -> titulo = true; //falta tiempo_pregunta y no va titulo
+                case "TIEMPO_PREGUNTA" -> titulo = true;
                 case "NOMBRE" -> nombre = true;
                 case "TEMA" -> tema = true;
             }

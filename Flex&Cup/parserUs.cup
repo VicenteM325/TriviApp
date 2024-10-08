@@ -50,12 +50,11 @@ parser code {:
 terminal        INICIO_USER, INICIO_FORM, INICIO_DATOS;
 terminal        COLON, COMMA, OPEN_BRACE, CLOSE_BRACE, OPEN_ROUND_BRACKET, CLOSE_ROUND_BRACKET;
 
-terminal String      PARAM_USUARIO, PARAM_PASSWORD, PARAM_FECHA_CREACION, PARAM_FECHA_MODIFICACION;
-terminal String      PARAM_NOMBRE, PARAM_INSTITUCION;
-terminal String      PARAM_ID, PARAM_TIEMPO_TRIV, PARAM_NOMBRE_FORM, PARAM_TEMA, PARAM_USUARIO_CREACION;
+terminal String      PARAM_USUARIO, PARAM_PASSWORD, PARAM_NOMBRE, PARAM_INSTITUCION, PARAM_FECHA_CREACION, PARAM_FECHA_MODIFICACION;
+terminal String      PARAM_ID, PARAM_TIEMPO, PARAM_NOMBRE_FORM, PARAM_TEMA, PARAM_USUARIO_CREACION;
 
-terminal String      PARAM_COMPONENTES, PARAM_FORMULARIO, PARAM_CLASE, PARAM_TEXTO_VISIBLE;
-terminal String      PARAM_OPCIONES, PARAM_FILAS, PARAM_COLUMNAS, PARAM_RESPUESTAS;
+terminal String      PARAM_COMPONENTES, PARAM_NOMBRE_CAMPO, PARAM_FORMULARIO, PARAM_CLASE, PARAM_TEXTO_VISIBLE;
+terminal String      PARAM_RESPUESTA, PARAM_IDC, PARAM_OPCIONES, PARAM_FILAS, PARAM_COLUMNAS;
 
 terminal String      CLASS_CAMPO_TEXTO, CLASS_AREA_TEXTO, CLASS_CHECKBOX, CLASS_RADIO, CLASS_FICHERO, CLASS_COMBO;
 terminal String      OPCIONES, OPCIONES2;
@@ -69,13 +68,14 @@ non terminal        paramsData, paramData;
 
 non terminal        componentStruct, components, component, params, param;
 
-non terminal String         clase, opciones;
-non terminal String         value, fecha, entero, literal, id, keyword;
+non terminal String         clase, alineacion, required, opciones;
+non terminal String         value, fecha, entero, literal, id, tema, keyword;
 
 inicio ::= startUserStructure
          | startFormStructure
          | startDataStructure
          ;
+       
 
 startUserStructure ::= INICIO_USER startStructure paramsUser endStructure;
 startFormStructure ::= INICIO_FORM startStructure paramsForm endStructure;
@@ -89,10 +89,10 @@ paramsUser ::= paramUser COMMA paramsUser
              | paramUser
              ;
 
-paramUser ::= PARAM_USUARIO COLON value:v               {:user.setUsuario(v.replace("\"",""));:}
+paramUser ::= PARAM_USUARIO COLON value:v               {:user.setNombre(v.replace("\"",""));:}
             | PARAM_PASSWORD COLON value:v              {:user.setPassword(v.replace("\"",""));:}
-            | PARAM_NOMBRE COLON value:v              {:user.setNombre(v.replace("\"",""));:}
-            | PARAM_INSTITUCION COLON value:v              {:user.setInstitucion(v.replace("\"",""));:}
+            | PARAM_NOMBRE COLON value:v                {:user.setName(v.replace("\"",""));:}
+            | PARAM_INSTITUCION COLON value:v           {:user.setInstitucion(v.replace("\"",""));:}
             | PARAM_FECHA_CREACION COLON fecha:f        {:user.setFechaCreacion(f.replace("\"",""));:}
             | PARAM_FECHA_MODIFICACION COLON fecha:f    {:user.setFechaModificacion(f.replace("\"",""));:}
             ;
@@ -100,17 +100,17 @@ paramUser ::= PARAM_USUARIO COLON value:v               {:user.setUsuario(v.repl
 
 
 
-/*********************Producciones para parametros de Trivia*********************/
+/*********************Producciones para parametros de form*********************/
 paramsForm ::= paramForm COMMA paramsForm
              | paramForm
              ;
 
-paramForm ::= PARAM_NOMBRE_FORM COLON value:v               {:form.setNombre(v.replace("\"",""));:}
+paramForm ::= PARAM_NOMBRE COLON value:v               {:form.setNombre(v.replace("\"",""));:}
             | PARAM_USUARIO_CREACION COLON value:v          {:form.setUsuarioCreacion(v.replace("\"",""));:}
             | PARAM_ID COLON id:i                           {:form.setId(i.replace("\"",""));:}
             | PARAM_FECHA_CREACION COLON fecha:f            {:form.setFechaCreacion(f.replace("\"",""));:}
-            | PARAM_TIEMPO_TRIV COLON entero:e              {:form.setTiempo_pregunta(e.replace("\"",""));:}
-            | PARAM_TEMA COLON literal:l                       {:form.setTema(l.replace("\"",""));:}
+            | PARAM_TIEMPO COLON entero:e                   {:form.setTiempo(e);:}
+            | PARAM_TEMA COLON value:v                      {:form.setTema(v.replace("\"",""));:}
             | componentStruct
             ;
 
@@ -129,17 +129,17 @@ params ::= param COMMA params
          | param
          ;
 
-param ::= PARAM_ID COLON id:i                           {:comp.setId(i.replace("\"",""));:}
+param ::= PARAM_IDC COLON id:i                           {:comp.setId(i.replace("\"",""));:}
+        | PARAM_NOMBRE_CAMPO COLON value:v              {:comp.setNombreCampo(v.replace("\"",""));:}
         | PARAM_FORMULARIO COLON id:i                   {:comp.setFormulario(i.replace("\"",""));:}
         | PARAM_CLASE COLON clase:c                     {:comp.setClase(c.replace("\"",""));:}
         | PARAM_TEXTO_VISIBLE COLON literal:l           {:comp.setTextoVisible(l.replace("\"",""));:}
+        | PARAM_RESPUESTA COLON literal:l               {:comp.setTextoVisible(l.replace("\"",""));:}
         | PARAM_OPCIONES COLON opciones:o               {:comp.setOpciones(o.replace("\"",""));:}
         | PARAM_FILAS COLON entero:e                    {:comp.setNoFilas(e.replace("\"",""));:}
         | PARAM_COLUMNAS COLON entero:e                 {:comp.setNoColumnas(e.replace("\"",""));:}
-        | PARAM_RESPUESTAS COLON literal:l              {:comp.setRespuestas(l.replace("\"",""));:}
-
         ;
-/*****************Fin de producciones para parametros de Trivia*****************/
+/*****************Fin de producciones para parametros de form*****************/
 
 
 
@@ -188,16 +188,21 @@ opciones ::= OPCIONES:o           {:RESULT = o;:}
            ;
 
 keyword ::= clase:c                     {:RESULT = c;:}
+          | alineacion:a                {:RESULT = a;:}
+          | required:r                  {:RESULT = r;:}
           | PARAM_USUARIO:k             {:RESULT = k;:}
           | PARAM_PASSWORD:k            {:RESULT = k;:}
+          | PARAM_NOMBRE:k              {:RESULT = k;:}
+          | PARAM_INSTITUCION:k         {:RESULT = k;:}
           | PARAM_FECHA_CREACION:k      {:RESULT = k;:}
           | PARAM_FECHA_MODIFICACION:k  {:RESULT = k;:}
           | PARAM_ID:k                  {:RESULT = k;:}
-          | PARAM_TIEMPO_TRIV:k         {:RESULT = k;:}
-          | PARAM_NOMBRE_FORM:k         {:RESULT = k;:}
+          | PARAM_IDC:k                 {:RESULT = k;:}
+          | PARAM_RESPUESTA:k           {:RESULT = k;:}
           | PARAM_TEMA:k                {:RESULT = k;:}
           | PARAM_USUARIO_CREACION:k    {:RESULT = k;:}
           | PARAM_COMPONENTES:k         {:RESULT = k;:}
+          | PARAM_NOMBRE_CAMPO:k        {:RESULT = k;:}
           | PARAM_FORMULARIO:k          {:RESULT = k;:}
           | PARAM_CLASE:k               {:RESULT = k;:}
           | PARAM_TEXTO_VISIBLE:k       {:RESULT = k;:}

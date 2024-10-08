@@ -26,9 +26,13 @@ import java_cup.runtime.Symbol;
 
 VALUE = "\""[^\s"\""]*"\""
 LITERAL = "\""[^"\""]*"\""
+DECIMAL=[0-9]+"."[0-9]+
 
 %%
-
+<YYINITIAL> "xson"                      {return symbol(XSON);}
+<YYINITIAL> "version"                   {return symbol(VERSION);}
+<YYINITIAL> "?"                         {return symbol(QUESTION_MARK);}
+<YYINITIAL> "\""                        {return symbol(QUOTE);}
 <YYINITIAL> "envio_respuesta"             {return symbol(START_RESPONSE);}
 <YYINITIAL> "fin_envio_respuesta"             {return symbol(END_RESPONSE);}
 <YYINITIAL> "envio_respuestas"            {return symbol(START_RESPONSES);}
@@ -50,10 +54,12 @@ LITERAL = "\""[^"\""]*"\""
     "}"                                 {return symbol(CLOSE_BRACE);}
     "["                                 {return symbol(OPEN_BRACKET);}
     "]"                                 {return symbol(CLOSE_BRACKET);}
+    "="                                 {return symbol(EQUALS);}
     (\s)                                {/*Ignorar*/}
 }
 
 <YYINITIAL> {VALUE}                     {return symbol(VALUE);}
 <YYINITIAL> {LITERAL}                     {return symbol(LITERAL);}
+<YYINITIAL> {DECIMAL}                     {return symbol(DECIMAL);}
 
 [^]                                     {System.out.println("Error responseLexer: " + yytext());}

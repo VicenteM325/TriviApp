@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Iniciar sesión</title>
 
-        <!-- Incluir CSS desde un archivo externo -->
+        <!--CSS-->
         <jsp:include page="/WEB-INF/extras/extrasCSS.jsp"/>
     </head>
     <body>
@@ -46,7 +46,7 @@
             </div>
         </div>
 
-        <!-- Incluir JS desde un archivo externo -->
+        <!--JS--> 
         <jsp:include page="/WEB-INF/extras/extrasJS.jsp"/>
 
         <!-- JQuery Validate -->

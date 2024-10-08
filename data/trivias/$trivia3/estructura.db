@@ -1,0 +1,12 @@
+db.trivia(
+    {
+        "ID_TRIVIA" : "$trivia3",
+        "TIEMPO_PREGUNTA" : 50,
+        "NOMBRE" : "trivia_3modificado",
+        "TEMA" : "TEMA3",
+        "USUARIO_CREACION" : "admin",
+        "FECHA_CREACION" : "2024-10-04",
+        "COMPONENTES" : (
+        )
+    }
+)

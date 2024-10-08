@@ -19,7 +19,7 @@ import java.util.List;
  */
 @WebServlet("/inicio")
 public class InicioServlet extends HttpServlet {
-    
+
     private CRUD<Formulario> formDAO = new FormularioDAO();
 
     @Override
@@ -33,23 +33,28 @@ public class InicioServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Formulario> forms = formDAO.getList();
-        Usuario user = (Usuario) request.getSession().getAttribute("user");
+
         
-        if (user == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
+        List<Formulario> forms = formDAO.getList();
+        List<Formulario> formsUser = new ArrayList<>();
+
+        // Obtiene el usuario de la sesión
+        Usuario user = (Usuario) request.getSession().getAttribute("user");
+
+
+        if (user != null && user.getNombre() != null) {
+            forms.forEach(f -> {
+
+                if (f != null && f.getUsuarioCreacion() != null && f.getUsuarioCreacion().equals(user.getNombre())) {
+                    formsUser.add(f);
+                }
+            });
         }
 
-        List<Formulario> formsUser = new ArrayList<>();
-        forms.stream()
-             .filter(f -> f.getUsuarioCreacion().equals(user.getNombre()))
-             .forEach(formsUser::add);
-
+        // Establece la lista de formularios filtrados como atributo en la request
         request.setAttribute("formularios", formsUser);
 
+        // Redirige a la página JSP
         request.getRequestDispatcher("inicioUsuario.jsp").forward(request, response);
     }
-
-    
 }

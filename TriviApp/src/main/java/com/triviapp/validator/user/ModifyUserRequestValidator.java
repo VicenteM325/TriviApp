@@ -10,7 +10,7 @@ import java.util.List;
  * @author vicente
  */
 public class ModifyUserRequestValidator extends Validator {
-    
+
     @Override
     public String validate(Token o, List<Parametro> params) {
         error = new StringBuilder("");
@@ -35,4 +35,6 @@ public class ModifyUserRequestValidator extends Validator {
         
         return error.toString();
     }
+
 }
+

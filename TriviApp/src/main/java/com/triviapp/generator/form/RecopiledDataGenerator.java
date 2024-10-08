@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author vicente
  */
-public class RecopiledDataGenerator extends Generator{
+public class RecopiledDataGenerator extends Generator {
 
     private final List<DatoRecopilado> dt;
 
@@ -18,17 +18,23 @@ public class RecopiledDataGenerator extends Generator{
 
     @Override
     public String generate() {
-        text = new StringBuilder();
+    text = new StringBuilder();
 
-        addLine("db.recopiledData(", 0);
-        addLine("{", 1);
-        dt.forEach(d -> {
+    addLine("db.recopiledData(", 0);
+    addLine("{", 1);
+
+    dt.forEach(d -> {
+        if (d.getNombre().equals("TIEMPO_PREGUNTA")) {
+            addLine("\"" + d.getNombre() + "\" : " + d.getValor() + ",", 2);
+        } else {
             addLine("\"" + d.getNombre() + "\" : \"" + d.getValor() + "\",", 2);
-        });
-        text.deleteCharAt(text.lastIndexOf(","));
-        addLine("}", 1);
-        addLine(")", 0);
+        }
+    });
 
-        return text.toString();
+    text.deleteCharAt(text.lastIndexOf(","));
+    addLine("}", 1);
+    addLine(")", 0);
+
+    return text.toString();
     }
 }

@@ -31,16 +31,15 @@ public class ComponentBuilder {
                 component.setIndice(Integer.parseInt(getValue(p)));
             } else if (p.getName().contains("TEXTO_VISIBLE")) {
                 component.setTextoVisible(p.getValue().replace("\"", ""));
+            } else if (p.getName().contains("RESPUESTA")) {
+                component.setRespuesta(getValue(p));
             } else if (p.getName().contains("OPCIONES")) {
                 component.setOpciones(getValue(p));
-            } else if (p.getName().contains("RESPUESTA")) {
-                component.setRespuestas(getValue(p));
             } else if (p.getName().contains("FILAS")) {
                 component.setNoFilas(getValue(p));
             } else if (p.getName().contains("COLUMNAS")) {
                 component.setNoColumnas(getValue(p));
-            }
-
+            } 
         });
         
         return component;

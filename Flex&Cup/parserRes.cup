@@ -33,9 +33,10 @@ terminal        RESPONSE_PARAMS, SERVER_RESPONSE;
 terminal        PARAM_MESSAGE, PARAM_LOGGED_USER;
 
 terminal String     LESS_THAN, GREATER_THAN, EXCLAMATION_MARK, COLON, COMMA, OPEN_BRACE, CLOSE_BRACE, OPEN_BRACKET, CLOSE_BRACKET;
+terminal String     QUESTION_MARK, XSON, VERSION, EQUALS, QUOTE, DECIMAL;
 terminal String     VALUE, LITERAL;
 
-non terminal        inicio, startResponses, responses, endResponses, startResponse, endResponse, startContent, endContent;
+non terminal        inicio, encabezado, XML_HEADER, startResponses, responses, endResponses, startResponse, endResponse, startContent, endContent;
 
 non terminal String         bloqueResponse, paramsResponse, paramResponse;
 non terminal String         value, literal, state;
@@ -43,10 +44,15 @@ non terminal String         value, literal, state;
 
 
 
-inicio ::= startResponse
-         | startResponses
+inicio ::= encabezado startResponse
+         | encabezado startResponses
          ;
 
+encabezado ::= XML_HEADER 
+             ;
+
+XML_HEADER ::= LESS_THAN QUESTION_MARK XSON VERSION EQUALS QUOTE DECIMAL QUOTE QUESTION_MARK GREATER_THAN
+             ;  
 startResponses ::= LESS_THAN EXCLAMATION_MARK START_RESPONSES GREATER_THAN responses;
 
 responses ::= startResponse endResponses

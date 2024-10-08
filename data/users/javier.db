@@ -1,0 +1,9 @@
+db.user(
+    {
+        "USUARIO" : "javier",
+        "PASSWORD" : "12345678",
+        "NOMBRE" : "JUANPEREZ",
+        "INSTITUCION" : "CUNOC",
+        "FECHA_CREACION" : "2024-10-03"
+    }
+)

@@ -1,0 +1,19 @@
+db.trivia(
+    {
+        "ID_TRIVIA" : "$trivia1",
+        "TIEMPO_PREGUNTA" : 45,
+        "NOMBRE" : "Triviaencuesta_1",
+        "TEMA" : "TEMA1",
+        "USUARIO_CREACION" : "admin",
+        "FECHA_CREACION" : "2024-10-04",
+        "COMPONENTES" : (
+            {
+                "ID" : "$_text_nombre_autor",
+                "TRIVIA" : "$trivia1",
+                "TEXTO_VISIBLE" : "null",
+                "CLASE" : "CAMPO_TEXTO",
+                "RESPUESTA" : "null"
+            }
+        )
+    }
+)

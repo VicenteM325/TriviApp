@@ -11,13 +11,18 @@ public class ResponseSym {
   public static final int CLOSE_BRACKET = 18;
   public static final int OPEN_BRACE = 15;
   public static final int START_RESPONSE = 2;
+  public static final int DECIMAL = 24;
   public static final int GREATER_THAN = 11;
   public static final int PARAM_LOGGED_USER = 9;
-  public static final int VALUE = 19;
-  public static final int LITERAL = 20;
+  public static final int QUESTION_MARK = 19;
+  public static final int VALUE = 25;
+  public static final int XSON = 20;
+  public static final int LITERAL = 26;
   public static final int COLON = 13;
   public static final int OPEN_BRACKET = 17;
+  public static final int QUOTE = 23;
   public static final int RESPONSE_PARAMS = 6;
+  public static final int EQUALS = 22;
   public static final int COMMA = 14;
   public static final int EOF = 0;
   public static final int LESS_THAN = 10;
@@ -27,6 +32,7 @@ public class ResponseSym {
   public static final int error = 1;
   public static final int EXCLAMATION_MARK = 12;
   public static final int END_RESPONSES = 5;
+  public static final int VERSION = 21;
   public static final int SERVER_RESPONSE = 7;
   public static final int END_RESPONSE = 3;
   public static final String[] terminalNames = new String[] {
@@ -49,6 +55,12 @@ public class ResponseSym {
   "CLOSE_BRACE",
   "OPEN_BRACKET",
   "CLOSE_BRACKET",
+  "QUESTION_MARK",
+  "XSON",
+  "VERSION",
+  "EQUALS",
+  "QUOTE",
+  "DECIMAL",
   "VALUE",
   "LITERAL"
   };

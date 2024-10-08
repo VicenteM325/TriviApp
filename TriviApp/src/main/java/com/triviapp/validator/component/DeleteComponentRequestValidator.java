@@ -9,7 +9,8 @@ import java.util.List;
  *
  * @author vicente
  */
-public class DeleteComponentRequestValidator extends Validator{
+public class DeleteComponentRequestValidator extends Validator {
+
     @Override
     public String validate(Token o, List<Parametro> params) {
         error = new StringBuilder("");
@@ -19,7 +20,7 @@ public class DeleteComponentRequestValidator extends Validator{
         for (Parametro p : params) {
             switch (getName(p)) {
                 case "ID" -> id = true;
-                case "TRIVIA" -> form= true; //Formulario
+                case "TRIVIA" -> form= true;
             }
         }
         
@@ -32,4 +33,5 @@ public class DeleteComponentRequestValidator extends Validator{
         
         return error.toString();
     }
+
 }

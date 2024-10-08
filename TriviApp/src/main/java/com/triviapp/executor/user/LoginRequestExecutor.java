@@ -14,7 +14,8 @@ import com.triviapp.modelo.response.Response;
  *
  * @author vicente
  */
-public class LoginRequestExecutor extends Executor{
+public class LoginRequestExecutor extends Executor {
+
     private final CRUD<Usuario> userDAO;
     private UserBuilder userBuilder;
 

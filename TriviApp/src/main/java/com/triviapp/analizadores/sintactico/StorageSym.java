@@ -9,48 +9,50 @@ package com.triviapp.analizadores.sintactico;
 public class StorageSym {
   /* terminals */
   public static final int PARAM_ID = 17;
-  public static final int PARAM_TEXTO_VISIBLE = 25;
-  public static final int ENTERO = 40;
-  public static final int CLASS_RADIO = 33;
-  public static final int PARAM_CLASE = 24;
-  public static final int FECHA = 39;
-  public static final int CLASS_CHECKBOX = 32;
+  public static final int PARAM_TEXTO_VISIBLE = 26;
+  public static final int ENTERO = 42;
+  public static final int CLASS_RADIO = 35;
+  public static final int PARAM_CLASE = 25;
+  public static final int FECHA = 41;
+  public static final int CLASS_CHECKBOX = 34;
   public static final int INICIO_USER = 2;
-  public static final int CLASS_COMBO = 35;
+  public static final int CLASS_COMBO = 37;
   public static final int PARAM_TEMA = 20;
-  public static final int PARAM_RESPUESTAS = 29;
+  public static final int PARAM_TIEMPO = 18;
+  public static final int PARAM_NOMBRE_CAMPO = 23;
   public static final int CLOSE_ROUND_BRACKET = 10;
   public static final int COMMA = 6;
+  public static final int PARAM_RESPUESTA = 27;
   public static final int INICIO_FORM = 3;
-  public static final int PARAM_FORMULARIO = 23;
+  public static final int PARAM_FORMULARIO = 24;
   public static final int PARAM_COMPONENTES = 22;
-  public static final int CLASS_CAMPO_TEXTO = 30;
-  public static final int ID = 38;
+  public static final int CLASS_CAMPO_TEXTO = 32;
+  public static final int ID = 40;
   public static final int EOF = 0;
-  public static final int PARAM_FECHA_CREACION = 13;
+  public static final int PARAM_FECHA_CREACION = 15;
+  public static final int PARAM_IDC = 28;
   public static final int PARAM_NOMBRE_FORM = 19;
   public static final int error = 1;
-  public static final int OPCIONES2 = 37;
+  public static final int OPCIONES2 = 39;
   public static final int PARAM_PASSWORD = 12;
   public static final int OPEN_BRACE = 7;
-  public static final int PARAM_FILAS = 27;
-  public static final int CLASS_AREA_TEXTO = 31;
-  public static final int PARAM_NOMBRE = 15;
+  public static final int PARAM_FILAS = 30;
+  public static final int CLASS_AREA_TEXTO = 33;
+  public static final int PARAM_NOMBRE = 13;
   public static final int PARAM_USUARIO_CREACION = 21;
-  public static final int LITERAL = 42;
+  public static final int LITERAL = 44;
   public static final int COLON = 5;
-  public static final int PARAM_FECHA_MODIFICACION = 14;
+  public static final int PARAM_FECHA_MODIFICACION = 16;
   public static final int INICIO_DATOS = 4;
-  public static final int PARAM_TIEMPO_TRIV = 18;
-  public static final int CLASS_FICHERO = 34;
-  public static final int PARAM_COLUMNAS = 28;
+  public static final int CLASS_FICHERO = 36;
+  public static final int PARAM_COLUMNAS = 31;
   public static final int OPEN_ROUND_BRACKET = 9;
   public static final int CLOSE_BRACE = 8;
-  public static final int VALUE = 41;
-  public static final int PARAM_OPCIONES = 26;
+  public static final int VALUE = 43;
+  public static final int PARAM_OPCIONES = 29;
   public static final int PARAM_USUARIO = 11;
-  public static final int PARAM_INSTITUCION = 16;
-  public static final int OPCIONES = 36;
+  public static final int PARAM_INSTITUCION = 14;
+  public static final int OPCIONES = 38;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -65,23 +67,25 @@ public class StorageSym {
   "CLOSE_ROUND_BRACKET",
   "PARAM_USUARIO",
   "PARAM_PASSWORD",
-  "PARAM_FECHA_CREACION",
-  "PARAM_FECHA_MODIFICACION",
   "PARAM_NOMBRE",
   "PARAM_INSTITUCION",
+  "PARAM_FECHA_CREACION",
+  "PARAM_FECHA_MODIFICACION",
   "PARAM_ID",
-  "PARAM_TIEMPO_TRIV",
+  "PARAM_TIEMPO",
   "PARAM_NOMBRE_FORM",
   "PARAM_TEMA",
   "PARAM_USUARIO_CREACION",
   "PARAM_COMPONENTES",
+  "PARAM_NOMBRE_CAMPO",
   "PARAM_FORMULARIO",
   "PARAM_CLASE",
   "PARAM_TEXTO_VISIBLE",
+  "PARAM_RESPUESTA",
+  "PARAM_IDC",
   "PARAM_OPCIONES",
   "PARAM_FILAS",
   "PARAM_COLUMNAS",
-  "PARAM_RESPUESTAS",
   "CLASS_CAMPO_TEXTO",
   "CLASS_AREA_TEXTO",
   "CLASS_CHECKBOX",

@@ -9,26 +9,26 @@ import java.util.List;
  *
  * @author vicente
  */
-public class CreateFormRequestValidator extends Validator{
-    
-     @Override
+public class CreateFormRequestValidator extends Validator {
+
+    @Override
     public String validate(Token o, List<Parametro> params) {
         error = new StringBuilder("");
         boolean id = false;
-        boolean titulo = false;
+        boolean tiempo = false;
         boolean nombre = false;
         boolean tema = false;
         
         for (Parametro p : params) {
             switch (getName(p)) {
-                case "ID" -> id = true;
-                case "TITULO" -> titulo = true;
+                case "ID_TRIVIA" -> id = true;
+                case "TIEMPO_PREGUNTA" -> tiempo = true;
                 case "NOMBRE" -> nombre = true;
                 case "TEMA" -> tema = true;
             }
         }
         
-        if (!id | !titulo | !nombre | !tema) {
+        if (!id | !tiempo | !nombre | !tema) {
             error.append("Faltan parametros obligatorios en la solicitud, linea: ")
                     .append(o.getLinea())
                     .append(", col: ")
@@ -37,5 +37,5 @@ public class CreateFormRequestValidator extends Validator{
         
         return error.toString();
     }
-    
+
 }

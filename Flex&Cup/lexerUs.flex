@@ -25,8 +25,7 @@ import static com.triviapp.analizadores.sintactico.StorageSym.*;
     return new Symbol(EOF, "Fin de linea");
 %eofval}
 
-ENTERO = "\""(0|([1-9][0-9]*))"\""
-
+ENTERO = (0|[1-9][0-9]*)
 ID = "\""[\_\-\$](\w|[\_\-\$])*"\""
 FECHA = "\""\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])"\""
 OPCIONES = "\""((\w+\|\w+)(\|\w+)*)"\""
@@ -38,32 +37,31 @@ LITERAL = "\""[^"\""]*"\""
 
 
 <YYINITIAL> "db.user"                       {return symbol(INICIO_USER);}
-<YYINITIAL> "db.trivia"                       {return symbol(INICIO_FORM);}
+<YYINITIAL> "db.trivia"                     {return symbol(INICIO_FORM);}
 <YYINITIAL> "db.recopiledData"              {return symbol(INICIO_DATOS);}
 
 <YYINITIAL> "\"USUARIO\""                   {return symbol(PARAM_USUARIO);}
 <YYINITIAL> "\"PASSWORD\""                  {return symbol(PARAM_PASSWORD);}
+<YYINITIAL> "\"NOMBRE\""                    {return symbol(PARAM_NOMBRE);}
+<YYINITIAL> "\"INSTITUCION\""               {return symbol(PARAM_INSTITUCION);}
 <YYINITIAL> "\"FECHA_CREACION\""            {return symbol(PARAM_FECHA_CREACION);}
 <YYINITIAL> "\"FECHA_MODIFICACION\""        {return symbol(PARAM_FECHA_MODIFICACION);}
-<YYINITIAL> "\"NOMBRE\""                    {return symbol(PARAM_NOMBRE);}
-<YYINITIAL> "\"INSTITUCION\""                {return symbol(PARAM_INSTITUCION);}
 
-<YYINITIAL> "\"ID_TRIVIA\""                        {return symbol(PARAM_ID);}
-<YYINITIAL> "\"TIEMPO_PREGUNTA\""                 {return symbol(PARAM_TIEMPO_TRIV);}
-<YYINITIAL> "\"NOMBRE\""                    {return symbol(PARAM_NOMBRE_FORM);}
+<YYINITIAL> "\"ID_TRIVIA\""                 {return symbol(PARAM_ID);}
+<YYINITIAL> "\"TIEMPO_PREGUNTA\""           {return symbol(PARAM_TIEMPO);}
 <YYINITIAL> "\"TEMA\""                      {return symbol(PARAM_TEMA);}
 <YYINITIAL> "\"USUARIO_CREACION\""          {return symbol(PARAM_USUARIO_CREACION);}
-
 <YYINITIAL> "\"COMPONENTES\""               {return symbol(PARAM_COMPONENTES);}
 
-//<YYINITIAL> "\"ID\""              {return symbol(PARAM_NOMBRE_CAMPO);}
-<YYINITIAL> "\"TRIVIA\""                {return symbol(PARAM_FORMULARIO);}
+<YYINITIAL> "\"ID\""                        {return symbol(PARAM_IDC);}
+<YYINITIAL> "\"NOMBRE_CAMPO\""              {return symbol(PARAM_NOMBRE_CAMPO);}
+<YYINITIAL> "\"TRIVIA\""                    {return symbol(PARAM_FORMULARIO);}
 <YYINITIAL> "\"CLASE\""                     {return symbol(PARAM_CLASE);}
 <YYINITIAL> "\"TEXTO_VISIBLE\""             {return symbol(PARAM_TEXTO_VISIBLE);}
+<YYINITIAL> "\"RESPUESTA\""                 {return symbol(PARAM_RESPUESTA);}
 <YYINITIAL> "\"OPCIONES\""                  {return symbol(PARAM_OPCIONES);}
 <YYINITIAL> "\"FILAS\""                     {return symbol(PARAM_FILAS);}
 <YYINITIAL> "\"COLUMNAS\""                  {return symbol(PARAM_COLUMNAS);}
-<YYINITIAL> "\"RESPUESTAS\""                  {return symbol(PARAM_RESPUESTAS);}
 
 <YYINITIAL> "\"CAMPO_TEXTO\""               {return symbol(CLASS_CAMPO_TEXTO);}
 <YYINITIAL> "\"AREA_TEXTO\""                {return symbol(CLASS_AREA_TEXTO);}

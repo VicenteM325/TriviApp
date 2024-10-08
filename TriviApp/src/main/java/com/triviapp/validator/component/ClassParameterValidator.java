@@ -9,8 +9,9 @@ import java.util.List;
  *
  * @author vicente
  */
-public class ClassParameterValidator extends Validator{
-     @Override
+public class ClassParameterValidator extends Validator {
+
+    @Override
     public String validate(Token o, List<Parametro> params) {
         error = new StringBuilder("");
         String msgError = "Hay parametros que no son aceptados por la clase indicada, linea: " + o.getLinea() + ", col: " + o.getColumna();
@@ -37,12 +38,10 @@ public class ClassParameterValidator extends Validator{
                 case "AREA_TEXTO" -> {
                     params.forEach(p2 -> {
                         switch (getName(p2)) {
-                            case "OPCIONES"-> error.append(msgError);
+                            case "OPCIONES" -> error.append(msgError);
                         }
                     });
                 }
-                
-                
             }
         });
 
@@ -52,5 +51,5 @@ public class ClassParameterValidator extends Validator{
     protected String getClass(Parametro p) {
         return p.getValue().replace("\"", "").replaceAll("\\s", "");
     }
-    
 }
+

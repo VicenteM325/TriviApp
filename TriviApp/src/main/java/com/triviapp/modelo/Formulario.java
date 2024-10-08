@@ -8,18 +8,19 @@ import java.util.List;
  * @author vicente
  */
 public class Formulario {
+
     private String id;
+    private String tiempo;
     private String nombre;
-    private String tiempo_pregunta;
     private String tema;
     private String usuarioCreacion;
     private String fechaCreacion;
     private List<Componente> componentes;
 
-    public Formulario(String id, String nombre,String tiempo_pregunta, String tema, String usuarioCreacion, String fechaCreacion) {
+    public Formulario(String id, String tiempo, String nombre, String tema, String usuarioCreacion, String fechaCreacion) {
         this.id = id;
+        this.tiempo = tiempo;
         this.nombre = nombre;
-        this.tiempo_pregunta = tiempo_pregunta;
         this.tema = tema;
         this.usuarioCreacion = usuarioCreacion;
         this.fechaCreacion = fechaCreacion;
@@ -38,15 +39,14 @@ public class Formulario {
         this.id = id;
     }
 
-    public String getTiempo_pregunta() {
-        return tiempo_pregunta;
+    public String getTiempo() {
+        return tiempo;
     }
 
-    public void setTiempo_pregunta(String tiempo_pregunta) {
-        this.tiempo_pregunta = tiempo_pregunta;
+    public void setTiempo(String tiempo) {
+        this.tiempo = tiempo;
     }
 
-    
     public String getNombre() {
         return nombre;
     }

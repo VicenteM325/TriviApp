@@ -31,7 +31,7 @@ public class FormBuilder {
             if (p.getName().contains("ID_TRIVIA")) {
                 form.setId(getValue(p));
             } else if (p.getName().contains("TIEMPO_PREGUNTA")) {
-                form.setTiempo_pregunta(p.getValue().replace("\"", ""));
+                form.setTiempo(p.getValue());
             } else if (p.getName().contains("NOMBRE")) {
                 form.setNombre(getValue(p));
             } else if (p.getName().contains("TEMA")) {
@@ -59,7 +59,7 @@ public class FormBuilder {
             if (p.getName().contains("ID_TRIVIA")) {
                 form.setId(getValue(p));
             } else if (p.getName().contains("TIEMPO_PREGUNTA")) {
-                form.setTiempo_pregunta(p.getValue().replace("\"", ""));
+                form.setTiempo(p.getValue().replace("\"", ""));
             } else if (p.getName().contains("NOMBRE")) {
                 form.setNombre(getValue(p));
             } else if (p.getName().contains("TEMA")) {

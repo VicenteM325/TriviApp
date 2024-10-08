@@ -7,6 +7,8 @@ import com.triviapp.modelo.Componente;
 import com.triviapp.modelo.DatoRecopilado;
 import com.triviapp.modelo.Formulario;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,7 +23,10 @@ import java.util.List;
  *
  * @author vicente
  */
-public class ReaDataServlet extends HttpServlet {
+@WebServlet("/readData")
+@MultipartConfig
+public class ReadDataServlet extends HttpServlet {
+
     private final CRUD<Formulario> formDAO = new FormularioDAO();
     private final DatoRecopiladoDAO dataDAO = new DatoRecopiladoDAO();
 
@@ -55,27 +60,25 @@ public class ReaDataServlet extends HttpServlet {
             value = null;
             switch (c.getClase()) {
                 case "CHECKBOX" -> {
-                    values = Arrays.toString(request.getParameterValues(c.getFormulario())).replace("[", "").replace("]", "").replaceAll("\\s", "");
+                    values = Arrays.toString(request.getParameterValues(c.getNombreCampo())).replace("[", "").replace("]", "").replaceAll("\\s", "");
                 }
                 case "FICHERO" -> {
-                    try {
-                        part = request.getPart(c.getFormulario());
-                        value = Paths.get(part.getSubmittedFileName()).getFileName().toString();
-                    } catch (IOException | ServletException e) {
-                    }
+                    part = request.getPart(c.getNombreCampo());
+                    value = Paths.get(part.getSubmittedFileName()).getFileName().toString();
                 }
+
                 case "CAMPO_TEXTO", "RADIO", "COMBO", "AREA_TEXTO" ->
-                    value = request.getParameter(c.getFormulario());
+                    value = request.getParameter(c.getNombreCampo());
             }
             if (values != null) {
                 if (!values.equals("null")) {
-                    datosRecopilados.add(new DatoRecopilado(c.getFormulario(), values));
+                    datosRecopilados.add(new DatoRecopilado(c.getNombreCampo(), values));
                 }
             }
 
             if (value != null) {
                 if (!value.trim().isEmpty()) {
-                    datosRecopilados.add(new DatoRecopilado(c.getFormulario(), value));
+                    datosRecopilados.add(new DatoRecopilado(c.getNombreCampo(), value));
                 }
             }
         }
@@ -84,4 +87,5 @@ public class ReaDataServlet extends HttpServlet {
 
         response.sendRedirect("success.jsp");
     }
+
 }

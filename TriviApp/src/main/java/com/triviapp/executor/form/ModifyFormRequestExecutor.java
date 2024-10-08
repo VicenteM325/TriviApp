@@ -31,15 +31,15 @@ public class ModifyFormRequestExecutor extends Executor {
         if (formDAO.exists(modifyForm.getId())) {
             var currentForm = formDAO.getObject(modifyForm.getId());
 
-            if (modifyForm.getTiempo_pregunta() != null) currentForm.setTiempo_pregunta(modifyForm.getTiempo_pregunta());
+            if (modifyForm.getTiempo() != null) currentForm.setTiempo(modifyForm.getTiempo());
             if (modifyForm.getNombre() != null) currentForm.setNombre(modifyForm.getNombre());
             if (modifyForm.getTema() != null) currentForm.setTema(modifyForm.getTema());
             
             formDAO.create(currentForm);
-            addResponse("El formulario " + currentForm.getId() + " fue modificado");
+            addResponse("La trivia " + currentForm.getId() + " fue modificada");
             //generar respuesta
         } else {
-            addResponse("No se puede modificar el formulario " + modifyForm.getId() + " porque no existe");
+            addResponse("No se puede modificar la trivia " + modifyForm.getId() + " porque no existe");
         }
         
         return response.toString();

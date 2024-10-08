@@ -36,9 +36,9 @@ public class ImportFormExecutor extends Executor {
 
         if (!formDAO.exists(form.getId())) {
             formDAO.create(form);
-            addResponse("Formulario " + form.getId() + " importado exitosamente");
+            addResponse("Trivia" + form.getId() + " importada exitosamente");
         } else {
-            addResponse("No se puede importar, el formulario " + form.getId() + " ya existe");
+            addResponse("No se puede importar, la trivia" + form.getId() + " ya existe");
         }
 
         return response.toString();

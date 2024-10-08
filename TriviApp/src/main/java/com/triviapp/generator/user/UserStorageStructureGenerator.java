@@ -8,7 +8,8 @@ import com.triviapp.modelo.Usuario;
  * @author vicente
  */
 public class UserStorageStructureGenerator extends Generator {
-     private Usuario user;
+
+    private Usuario user;
 
     public UserStorageStructureGenerator(Usuario user) {
         this.user = user;
@@ -19,9 +20,9 @@ public class UserStorageStructureGenerator extends Generator {
         text = new StringBuilder();
         addLine("db.user(", 0);
         addLine("{", 1);
-        addLine("\"USUARIO\" : \""+user.getUsuario()+"\",", 2);
+        addLine("\"USUARIO\" : \""+user.getNombre()+"\",", 2);
         addLine("\"PASSWORD\" : \""+user.getPassword()+"\",", 2);
-        addLine("\"NOMBRE\" : \""+user.getNombre()+"\",", 2);
+        addLine("\"NOMBRE\" : \""+user.getName()+"\",", 2);
         addLine("\"INSTITUCION\" : \""+user.getInstitucion()+"\",", 2);
         addLine("\"FECHA_CREACION\" : \""+user.getFechaCreacion()+"\",", 2);
         if (user.getFechaModificacion() != null) addLine("\"FECHA_MODIFICACION\" : \""+user.getFechaModificacion()+"\",", 2);

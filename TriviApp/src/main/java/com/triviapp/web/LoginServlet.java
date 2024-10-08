@@ -38,10 +38,6 @@ public class LoginServlet extends HttpServlet {
 
                 String user = request.getParameter("usuario");
                 String pass = request.getParameter("password");
-                System.out.println("Usuario: " + user);
-System.out.println("Password: " + pass);
-System.out.println("Acción: " + accion);
-
 
                 if (userDAO.exists(user)) {
                     Usuario usuario = userDAO.getObject(user);

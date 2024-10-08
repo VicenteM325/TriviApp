@@ -8,8 +8,8 @@ import java.util.List;
  *
  * @author vicente
  */
-public class ClassRequiredParametersValidator extends ClassParameterValidator{
-    
+public class ClassRequiredParametersValidator extends ClassParameterValidator {
+
     @Override
     public String validate(Token o, List<Parametro> params) {
         error = new StringBuilder("");
@@ -28,7 +28,7 @@ public class ClassRequiredParametersValidator extends ClassParameterValidator{
                     clase = getClass(p);
                     for (Parametro pr : params) {
                         switch (getName(pr)) {
-                            case "NOMBRE_CAMPO" -> nombreC = true;
+                          //  case "NOMBRE_CAMPO" -> nombreC = true;
                             case "TEXTO_VISIBLE" -> textV = true;
                         }
                     }
@@ -38,7 +38,7 @@ public class ClassRequiredParametersValidator extends ClassParameterValidator{
                     clase = getClass(p);
                     for (Parametro pr : params) {
                         switch (getName(pr)) {
-                            case "NOMBRE_CAMPO" -> nombreC = true;
+                         //   case "NOMBRE_CAMPO" -> nombreC = true;
                             case "OPCIONES" -> options = true; 
                             case "TEXTO_VISIBLE" -> textV = true;
                         }
@@ -49,27 +49,28 @@ public class ClassRequiredParametersValidator extends ClassParameterValidator{
                     clase = getClass(p);
                     for (Parametro pr : params) {
                         switch (getName(pr)) {
-                            case "NOMBRE_CAMPO" -> nombreC = true;
+                        //    case "NOMBRE_CAMPO" -> nombreC = true;
                             case "FILAS" -> filas = true;
                             case "COLUMNAS" -> cols= true;
                             case "TEXTO_VISIBLE" -> textV = true;
                         }
                     }
                 }
-           
+
+                
             }
         }
         
         switch (clase) {
-            case "CAMPO_TEXTO", "FICHERO" -> {
+          /*  case "CAMPO_TEXTO", "FICHERO" -> {
                 if (!nombreC) {
-                    setMSG("El parametro NOMBRE_CAMPO es obligatorio, ", o);
+                    setMSG("El parametro TextoVisible es obligatorio, ", o);
                 }
             }
-            
+           */ 
             case "CHECKBOX", "RADIO", "COMBO" -> {
                 if (!nombreC | !options) {
-                    setMSG("Los parametros NOMBRE_CAMPO y OPCIONES son obligatorios, ", o);
+                    setMSG("Los parametros  OPCIONES son obligatorios, ", o);
                 }
             }
             
@@ -82,7 +83,7 @@ public class ClassRequiredParametersValidator extends ClassParameterValidator{
         }
         
         switch (clase) {
-            case "CAMPO_TEXTO", "FICHERO", "CHECKBOX", "RADIO", "COMBO", "AREA_TEXTO", "IMAGEN", "BOTON" -> {
+            case "CAMPO_TEXTO", "FICHERO", "CHECKBOX", "RADIO", "COMBO", "AREA_TEXTO" -> {
                 if (!textV) {
                     setMSG("el parametro TEXTO_VISIBLE es obligatorio cuando se modifica la clase del componente", o);
                 }
@@ -99,4 +100,5 @@ public class ClassRequiredParametersValidator extends ClassParameterValidator{
                 .append(", col: ")
                 .append(o.getColumna());
     }
+
 }

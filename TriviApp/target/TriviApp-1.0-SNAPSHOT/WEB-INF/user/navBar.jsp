@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-xl fixed-top bg-dark navbar-dark">
         <a href="${pageContext.request.contextPath}/inicio  " class="navbar-brand">
             <i class="fas fa-file-signature"></i>
-            Web Form Builder
+            Trivi App Web
         </a>
 
         <div class="collapse navbar-collapse">

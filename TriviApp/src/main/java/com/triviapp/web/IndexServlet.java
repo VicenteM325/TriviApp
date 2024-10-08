@@ -51,9 +51,7 @@ public class IndexServlet extends HttpServlet {
                            {
                                "USUARIO" : "admin",
                                "PASSWORD" : "admin",
-                               "NOMBRE" : "admin",
-                               "INSTITUCION" : "cunoc",
-                               "FECHA_CREACION" : "2024-09-29"
+                               "FECHA_CREACION" : "2024-31-09"
                            }
                        )""";
 

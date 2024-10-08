@@ -8,7 +8,7 @@ com/triviapp/executor/component/CreateComponentRequestExecutor.class
 com/triviapp/generator/response/ResponseStructureGenerator.class
 com/response/analizador/sintactico/ResponseSym.class
 com/triviapp/modelo/errores/TipoError.class
-com/triviapp/web/form/ReaDataServlet.class
+com/triviapp/web/form/ImportFormServlet.class
 com/triviapp/executor/user/CreateUserRequestExecutor.class
 com/triviapp/executor/form/FormRequestExecutor.class
 com/response/modelo/Respuesta.class
@@ -39,6 +39,7 @@ com/response/controller/textEditor/SendDataToServer.class
 com/triviapp/aux/component/ComponentBuilder.class
 com/triviapp/executor/form/ModifyFormRequestExecutor.class
 com/triviapp/generator/form/FormStorageStructureGenerator.class
+com/triviapp/web/form/ReadDataServlet.class
 com/triviapp/aux/user/UserBuilder.class
 com/triviapp/JakartaRestConfiguration.class
 com/triviapp/web/IndexServlet.class
@@ -50,7 +51,6 @@ com/triviapp/web/form/FormExportServlet.class
 com/triviapp/modelo/Componente.class
 com/triviapp/analizadores/sintactico/StorageParser.class
 com/triviapp/datos/form/FormularioDAO.class
-com/triviapp/web/form/ImporFormServlet.class
 com/triviapp/resources/JakartaEE10Resource.class
 com/triviapp/generator/Generator.class
 com/triviapp/datos/CRUD.class

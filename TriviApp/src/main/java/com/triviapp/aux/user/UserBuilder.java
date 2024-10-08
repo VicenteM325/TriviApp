@@ -9,6 +9,7 @@ import java.time.LocalDate;
  * @author vicente
  */
 public class UserBuilder {
+
     private final Solicitud solicitud;
     private Usuario user;
 
@@ -20,13 +21,16 @@ public class UserBuilder {
         user = new Usuario();
 
         solicitud.getParametros().forEach(p -> {
+            
             String name = p.getName();
+        String value = getValue(p.getValue());
+        
             if (name.contains("\"USUARIO\"")) {
-                user.setUsuario(getValue(p.getValue()));
+                user.setNombre(getValue(p.getValue()));
             } else if (name.contains("PASSWORD")) {
                 user.setPassword(getValue(p.getValue()));
             } else if (name.contains("NOMBRE")) {
-                user.setNombre(getValue(p.getValue()));
+                user.setName(getValue(p.getValue()));
             } else if (name.contains("INSTITUCION")) {
                 user.setInstitucion(getValue(p.getValue()));
             } else if (name.contains("FECHA_CREACION")) {
@@ -46,7 +50,7 @@ public class UserBuilder {
         
         solicitud.getParametros().forEach(p -> {
             if (p.getName().contains("USUARIO_ANTIGUO")) {
-                user.setUsuario(getValue(p.getValue()));
+                user.setNombre(getValue(p.getValue()));
             }
         });
         
@@ -58,21 +62,30 @@ public class UserBuilder {
         
         solicitud.getParametros().forEach(p -> {
             if (p.getName().contains("USUARIO_NUEVO")) {
-                user.setUsuario(getValue(p.getValue()));
+                user.setNombre(getValue(p.getValue()));
             } else if (p.getName().contains("NUEVO_PASSWORD")) {
                 user.setPassword(getValue(p.getValue()));
+            } else if (p.getName().contains("INSTITUCION")) {
+                user.setInstitucion(getValue(p.getValue()));
             } else if (p.getName().contains("MODIFICACION")) {
                 user.setFechaModificacion(getValue(p.getValue()));
             }
         });
-        if (user.getFechaModificacion()== null) {
+        if (user.getFechaModificacion() == null) {
             user.setFechaModificacion(LocalDate.now().toString());
         }
-        
+        if (user.getNombre() == null) {
+            user.setNombre(user.getNombre());
+        }
+        if (user.getInstitucion() == null) {
+            user.setInstitucion(user.getInstitucion());
+        }
+
         return user;
     }
     
     private String getValue(String s) {
         return s.replaceAll("\\s", "").replace("\"", "");
     }
+
 }

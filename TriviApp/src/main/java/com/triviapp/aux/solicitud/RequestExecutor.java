@@ -60,7 +60,7 @@ public class RequestExecutor {
                 if (errores.size() > 1) {
                     addLinea("<!envio_respuestas>");
                     errores.forEach(e -> addResponse(e.getDescripcion().replace("\"", "")));
-                    addLinea("<!fin_envio_respuesta>");
+                    addLinea("<!fin_envio_respuestas>");
                 } else {
                     errores.forEach(e -> addResponse(e.getDescripcion().replace("\"", "")));
                 }

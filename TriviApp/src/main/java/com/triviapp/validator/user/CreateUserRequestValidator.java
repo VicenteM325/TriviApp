@@ -9,21 +9,21 @@ import com.triviapp.validator.Validator;
  *
  * @author vicente
  */
-public class CreateUserRequestValidator extends Validator{
+public class CreateUserRequestValidator extends  Validator {
+
     @Override
     public String validate(Token o, List<Parametro> params) {
         error = new StringBuilder("");
         boolean user = false;
         boolean pass = false;
-        
         for (Parametro p : params) {
-            switch (getName(p)) {   
+            switch (getName(p)) {
                 case "USUARIO" -> user = true;
                 case "PASSWORD" -> pass = true;
             }
         }
         
-        if (!user | !pass) {
+        if (!user | !pass  ) {
             error.append("El USUARIO y PASSWORD son parametros obligatorios, linea: ")
                     .append(o.getLinea())
                     .append(", col: ")
@@ -32,4 +32,5 @@ public class CreateUserRequestValidator extends Validator{
         
         return error.toString();
     }
+
 }

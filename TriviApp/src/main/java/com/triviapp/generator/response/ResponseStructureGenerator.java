@@ -8,6 +8,7 @@ import com.triviapp.modelo.response.Response;
  * @author vicente
  */
 public class ResponseStructureGenerator extends Generator {
+    
     private final Response r;
 
     public ResponseStructureGenerator(Response r) {
@@ -18,7 +19,7 @@ public class ResponseStructureGenerator extends Generator {
     public String generate() {
         text = new StringBuilder();
 
-        addLine("<!envio_respuestas: \"RESPUESTA_SERVIDOR\">", 0);
+        addLine("<!envio_respuesta: \"RESPUESTA_SERVIDOR\">", 0);
         addLine("{\"PARAMETROS_RESPUESTA\" : [", 1);
         addLine("{", 3);
         addLine("\"MESSAGE\" : \""+r.getMessage()+"\",", 4);
@@ -26,9 +27,10 @@ public class ResponseStructureGenerator extends Generator {
         addLine("}", 3);
         addLine("]", 2);
         addLine("}", 1);
-        addLine("<!fin_envio_respuestas!>", 0);
+        addLine("<!fin_envio_respuesta>", 0);
         text.deleteCharAt(text.lastIndexOf(","));
 
         return text.toString();
     }
+
 }
